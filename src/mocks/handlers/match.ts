@@ -6,10 +6,7 @@ import {
   mockMatches,
   setMatchStatus,
 } from '../fixtures/matches';
-import {
-  addSchedule,
-  updateScheduleByMatch,
-} from '../fixtures/schedules';
+import { addSchedule, updateScheduleByMatch } from '../fixtures/schedules';
 import type { MatchRequestPayload } from '../../types/match';
 import type { ScheduleRequest } from '../../types/schedule';
 

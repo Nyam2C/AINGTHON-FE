@@ -96,9 +96,7 @@ export function MatchDetailScreen() {
             </div>
 
             <div className="mt-[24px] px-[34px] flex flex-col gap-[16px]">
-              {user.link && (
-                <LinkBox label="소개 링크" url={user.link} />
-              )}
+              {user.link && <LinkBox label="소개 링크" url={user.link} />}
               {user.goal && <DetailBox label="목표">{user.goal}</DetailBox>}
               {user.techStacks.length > 0 && (
                 <div>

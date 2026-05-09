@@ -1,7 +1,15 @@
 import { http, HttpResponse } from 'msw';
 
-import { findProfile, getMe, mockProfiles, updateMe } from '../fixtures/profiles';
-import type { ProfileResponse, ProfileUpdateRequest } from '../../types/profile';
+import {
+  findProfile,
+  getMe,
+  mockProfiles,
+  updateMe,
+} from '../fixtures/profiles';
+import type {
+  ProfileResponse,
+  ProfileUpdateRequest,
+} from '../../types/profile';
 import type { Page } from '../../types/match';
 
 function ok<T>(data: T) {

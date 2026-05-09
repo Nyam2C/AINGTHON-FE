@@ -39,9 +39,7 @@ export function LabeledTextInput({
         aria-invalid={Boolean(error)}
         className={`w-full bg-white border ${borderClass} rounded-[8px] px-[14px] py-[12px] text-[14px] placeholder:text-[#8E8E8E] focus:outline-none`}
       />
-      {error && (
-        <p className="mt-[6px] text-[12px] text-red-500">{error}</p>
-      )}
+      {error && <p className="mt-[6px] text-[12px] text-red-500">{error}</p>}
     </div>
   );
 }

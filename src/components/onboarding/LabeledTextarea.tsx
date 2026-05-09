@@ -51,9 +51,7 @@ export function LabeledTextarea({
           </span>
         )}
       </div>
-      {error && (
-        <p className="mt-[6px] text-[12px] text-red-500">{error}</p>
-      )}
+      {error && <p className="mt-[6px] text-[12px] text-red-500">{error}</p>}
     </div>
   );
 }
