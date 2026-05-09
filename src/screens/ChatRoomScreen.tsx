@@ -4,6 +4,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ChatInputBar } from '../components/chat/ChatInputBar';
 import { ChatRoomHeader } from '../components/chat/ChatRoomHeader';
 import { MessageList } from '../components/chat/MessageList';
+import { SchedulePinnedCard } from '../components/chat/SchedulePinnedCard';
 import { BottomNav } from '../components/common/BottomNav';
 import { useChatMessagesQuery } from '../hooks/useChatMessagesQuery';
 import { useSendMessageMutation } from '../hooks/useSendMessageMutation';
@@ -14,6 +15,7 @@ import type { Role } from '../types/onboarding';
 type LocationState = {
   userName?: string;
   partnerRole?: Role;
+  scheduledDate?: string;
 };
 
 export function ChatRoomScreen() {
@@ -80,6 +82,7 @@ export function ChatRoomScreen() {
           responseHint="보통 10분 이내 응답"
           onBack={handleBack}
         />
+        <SchedulePinnedCard scheduledDate={state.scheduledDate} />
         <MessageList
           messages={messages ?? []}
           currentUserId={currentUserId}

@@ -43,6 +43,7 @@ export function MatchRequestScreen() {
               matchId: data.id,
               chatRoomId: data.chatRoomId,
               userName: user?.name ?? '',
+              scheduledDate: preferredDate ?? undefined,
             },
           });
         },
