@@ -2,7 +2,7 @@ import type { ChatRoom } from '../../types/chat';
 
 type ChatRoomCardProps = {
   room: ChatRoom;
-  onClick: (matchId: string) => void;
+  onClick: (roomId: number) => void;
   className?: string;
 };
 
@@ -17,7 +17,7 @@ export function ChatRoomCard({ room, onClick, className }: ChatRoomCardProps) {
   return (
     <button
       type="button"
-      onClick={() => onClick(room.matchId)}
+      onClick={() => onClick(room.roomId)}
       className={`w-[342px] h-[80px] bg-white border border-[#E6EBF3] rounded-[12px] flex items-center px-[16px] gap-[12px] text-left ${className ?? ''}`}
     >
       <span

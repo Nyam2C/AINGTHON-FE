@@ -4,60 +4,71 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ChatInputBar } from '../components/chat/ChatInputBar';
 import { ChatRoomHeader } from '../components/chat/ChatRoomHeader';
 import { MessageList } from '../components/chat/MessageList';
-import { ScheduleEditSheet } from '../components/chat/ScheduleEditSheet';
 import { BottomNav } from '../components/common/BottomNav';
 import { useChatMessagesQuery } from '../hooks/useChatMessagesQuery';
 import { useSendMessageMutation } from '../hooks/useSendMessageMutation';
-import { useUpdateScheduleMutation } from '../hooks/useUpdateScheduleMutation';
-import { MENTEE_USER_ID } from '../types/chat';
-import type { ScheduleCardMessage, UpdateSchedulePayload } from '../types/chat';
+import { useUploadChatFileMutation } from '../hooks/useUploadChatFileMutation';
+import { useAuthStore } from '../store/useAuthStore';
 import type { Role } from '../types/onboarding';
 
 type LocationState = {
   userName?: string;
-  chatRoomId?: string;
+  partnerRole?: Role;
 };
 
 export function ChatRoomScreen() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { matchId } = useParams<{ matchId: string }>();
+  const { roomId: roomIdParam } = useParams<{ roomId: string }>();
   const state = (location.state ?? {}) as LocationState;
+  const currentUserId = useAuthStore(s => s.userId);
 
-  const [editingSchedule, setEditingSchedule] =
-    useState<ScheduleCardMessage | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
-  const { data: messages } = useChatMessagesQuery(matchId ?? '');
+  const roomId =
+    roomIdParam && /^\d+$/.test(roomIdParam) ? Number(roomIdParam) : null;
+
+  const { data: messages } = useChatMessagesQuery(roomId);
   const sendMessage = useSendMessageMutation();
-  const updateSchedule = useUpdateScheduleMutation();
+  const uploadFile = useUploadChatFileMutation();
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages?.length]);
 
+  useEffect(() => {
+    if (!notice) return;
+    const t = setTimeout(() => setNotice(null), 2500);
+    return () => clearTimeout(t);
+  }, [notice]);
+
   const partnerName = state.userName ?? '멘토';
-  const partnerRole: Role = 'mentor';
+  const partnerRole: Role = state.partnerRole ?? 'mentor';
 
   const handleBack = () => navigate(-1);
 
-  const handleSend = (text: string) => {
-    if (!matchId) return;
+  const handleSend = (content: string) => {
+    if (roomId == null) return;
     sendMessage.mutate(
-      { matchId, text },
-      { onError: err => console.error(err) },
+      { roomId, content },
+      {
+        onError: () =>
+          setNotice('메시지 송신 기능 준비 중 (WebSocket 연결 작업 대기)'),
+      },
     );
   };
 
-  const handleEditSchedule = (msg: ScheduleCardMessage) => {
-    setEditingSchedule(msg);
-  };
-
-  const handleSubmitEdit = (payload: UpdateSchedulePayload) => {
-    updateSchedule.mutate(payload, {
-      onSuccess: () => setEditingSchedule(null),
-      onError: err => console.error(err),
-    });
+  const handleAttachFile = (file: File) => {
+    if (roomId == null) return;
+    uploadFile.mutate(
+      { roomId, file },
+      {
+        onSuccess: () =>
+          setNotice('파일 업로드 완료 — 채팅 송신은 추후 지원됩니다'),
+        onError: err => setNotice(`업로드 실패: ${err.message}`),
+      },
+    );
   };
 
   return (
@@ -71,26 +82,26 @@ export function ChatRoomScreen() {
         />
         <MessageList
           messages={messages ?? []}
-          currentUserId={MENTEE_USER_ID}
-          onEditSchedule={handleEditSchedule}
+          currentUserId={currentUserId}
           className="flex-1 overflow-y-auto pb-[160px]"
         />
         <div ref={bottomRef} />
+        {notice && (
+          <div
+            role="status"
+            className="absolute left-1/2 -translate-x-1/2 bottom-[150px] bg-black/80 text-white text-[12px] rounded-full px-[14px] py-[8px] z-30"
+          >
+            {notice}
+          </div>
+        )}
         <ChatInputBar
           onSend={handleSend}
+          onAttachFile={roomId != null ? handleAttachFile : undefined}
           disabled={sendMessage.isPending}
+          uploading={uploadFile.isPending}
           className="bottom-[80px]"
         />
         <BottomNav active="chat" />
-        {editingSchedule && matchId && (
-          <ScheduleEditSheet
-            matchId={matchId}
-            initial={editingSchedule.schedule}
-            onClose={() => setEditingSchedule(null)}
-            onSubmit={handleSubmitEdit}
-            isPending={updateSchedule.isPending}
-          />
-        )}
       </div>
     </div>
   );

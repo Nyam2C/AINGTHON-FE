@@ -1,20 +1,25 @@
-import { useState, type FormEvent } from 'react';
+import { useRef, useState, type ChangeEvent, type FormEvent } from 'react';
 
-import { PlusCircleIcon } from '../common/icons/PlusCircleIcon';
+import { PaperclipIcon } from '../common/icons/PaperclipIcon';
 import { SendIcon } from '../common/icons/SendIcon';
 
 type ChatInputBarProps = {
   onSend: (text: string) => void;
+  onAttachFile?: (file: File) => void;
   disabled?: boolean;
+  uploading?: boolean;
   className?: string;
 };
 
 export function ChatInputBar({
   onSend,
+  onAttachFile,
   disabled,
+  uploading,
   className,
 }: ChatInputBarProps) {
   const [text, setText] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const trimmed = text.trim();
   const canSend = !disabled && trimmed.length > 0;
@@ -26,6 +31,16 @@ export function ChatInputBar({
     setText('');
   };
 
+  const handlePickFile = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && onAttachFile) onAttachFile(file);
+    if (e.target) e.target.value = '';
+  };
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -34,12 +49,22 @@ export function ChatInputBar({
       <div className="flex items-center gap-[8px] bg-[#F2F4F7] rounded-full px-[16px] py-[8px]">
         <button
           type="button"
-          aria-label="추가"
-          onClick={() => console.warn('add not implemented')}
-          className="text-[#8E8E8E]"
+          aria-label="파일 첨부"
+          onClick={handlePickFile}
+          disabled={uploading || !onAttachFile}
+          className={
+            uploading || !onAttachFile ? 'text-[#8E8E8E]' : 'text-[#1D6DFE]'
+          }
         >
-          <PlusCircleIcon size={24} className="text-current" />
+          <PaperclipIcon size={24} className="text-current" />
         </button>
+        <input
+          ref={fileInputRef}
+          type="file"
+          className="hidden"
+          onChange={handleFileChange}
+          aria-hidden="true"
+        />
         <input
           type="text"
           value={text}
