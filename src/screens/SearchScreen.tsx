@@ -54,8 +54,13 @@ export function SearchScreen() {
         />
 
         <div className="mt-[28px] px-[34px] flex items-center gap-[8px]">
+          <img
+            src="/icon/filter-funnel-01.svg"
+            alt=""
+            aria-hidden="true"
+            className="h-[20px] w-[20px]"
+          />
           <h2 className="font-inter text-[18px] font-bold">필터</h2>
-          <span aria-hidden="true">▼</span>
         </div>
 
         <div className="mt-[16px] px-[34px]">
