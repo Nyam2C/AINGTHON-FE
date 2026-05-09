@@ -1,0 +1,14 @@
+import { RouterProvider } from 'react-router-dom';
+
+import { QueryProvider } from './app/QueryProvider';
+import { router } from './app/router';
+
+function App() {
+  return (
+    <QueryProvider>
+      <RouterProvider router={router} />
+    </QueryProvider>
+  );
+}
+
+export default App;

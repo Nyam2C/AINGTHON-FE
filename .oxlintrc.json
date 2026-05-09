@@ -6,5 +6,5 @@
     "perf": "warn",
     "suspicious": "warn"
   },
-  "ignorePatterns": ["node_modules", "android", "ios", "build", "dist"]
+  "ignorePatterns": ["node_modules", "dist", "build"]
 }

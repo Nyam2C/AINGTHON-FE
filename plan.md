@@ -4,27 +4,27 @@
 
 | 분류 | 기술 |
 |------|------|
-| 프레임워크 | React Native |
+| 프레임워크 | React + Vite |
 | 언어 | TypeScript |
 | 백엔드 | Spring (별도) |
 | 상태관리 | Zustand |
-| 스타일링 | NativeWind (Tailwind for RN) |
-| 라우팅 | React Navigation |
+| 스타일링 | Tailwind CSS |
+| 라우팅 | react-router-dom |
 | API 통신 | Axios + TanStack Query |
 | 패키지 매니저 | pnpm |
 | 린터 | oxlint |
-| 포매터 | oxformat |
+| 포매터 | Prettier |
 | Git 훅 | husky + lint-staged |
 | CI/CD | GitHub Actions |
-| 테스트 | Jest + React Native Testing Library |
-| 환경변수 | react-native-config |
+| 테스트 | Vitest |
+| 환경변수 | Vite (import.meta.env) |
 
 ## 폴더 구조
 
 ```
 src/
-├── app/              # 네비게이션 설정, 앱 진입점
-├── screens/          # 화면 단위 컴포넌트 (View)
+├── app/              # 라우터, 전역 Provider
+├── screens/          # 페이지 컴포넌트
 ├── components/
 │   ├── common/       # 공통 UI 컴포넌트
 │   └── [feature]/    # 기능별 UI 컴포넌트
