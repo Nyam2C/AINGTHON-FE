@@ -102,4 +102,8 @@ export const router = createBrowserRouter([
     path: '/auth/callback',
     element: <AuthCallbackScreen />,
   },
+  {
+    path: '/oauth/callback.html',
+    element: <AuthCallbackScreen />,
+  },
 ]);
