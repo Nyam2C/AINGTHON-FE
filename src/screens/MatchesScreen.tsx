@@ -41,10 +41,6 @@ export function MatchesScreen() {
     navigate(`/schedules/${scheduleId}/review`);
   };
 
-  const handleAddSchedule = () => {
-    console.warn('add schedule route not implemented');
-  };
-
   const list = (schedules ?? []).map(s => toMeeting(s, tab));
 
   return (
@@ -72,21 +68,6 @@ export function MatchesScreen() {
                 onReview={handleReview}
               />
             ))
-          )}
-          {tab === 'upcoming' && (
-            <button
-              type="button"
-              onClick={handleAddSchedule}
-              className="w-[255px] h-[42px] rounded-[9px] border border-blue-500 text-blue-500 text-[15px] font-semibold mt-[8px] flex items-center justify-center gap-[6px]"
-            >
-              <img
-                src="/icon/plus-square.svg"
-                alt=""
-                aria-hidden="true"
-                className="h-[18px] w-[18px]"
-              />
-              일정 추가
-            </button>
           )}
         </div>
         <BottomNav active="matching" />
