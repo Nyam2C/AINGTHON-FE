@@ -1,9 +1,5 @@
 import { apiClient } from './client';
-import type {
-  ChatMessage,
-  ChatRoom,
-  SendMessagePayload,
-} from '../types/chat';
+import type { ChatMessage, ChatRoom, SendMessagePayload } from '../types/chat';
 
 /** 채팅방 목록 — 본인 userId 필요 (placeholder: useAuthStore.userId) */
 export async function getChatRooms(userId: number): Promise<ChatRoom[]> {

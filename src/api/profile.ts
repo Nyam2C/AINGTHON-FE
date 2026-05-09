@@ -1,8 +1,5 @@
 import { apiClient } from './client';
-import type {
-  ProfileResponse,
-  ProfileUpdateRequest,
-} from '../types/profile';
+import type { ProfileResponse, ProfileUpdateRequest } from '../types/profile';
 
 export async function getMyProfile(): Promise<ProfileResponse> {
   const { data } = await apiClient.get<ProfileResponse>('/api/profiles/me');
@@ -26,9 +23,7 @@ export async function getProfile(profileId: number): Promise<ProfileResponse> {
   return data;
 }
 
-export async function uploadProfileImage(
-  file: File,
-): Promise<ProfileResponse> {
+export async function uploadProfileImage(file: File): Promise<ProfileResponse> {
   const form = new FormData();
   form.append('file', file);
   const { data } = await apiClient.put<ProfileResponse>(

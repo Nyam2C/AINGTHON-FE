@@ -27,7 +27,9 @@ export async function requestMatch(
 }
 
 /** 프로필 단건 조회 — `MatchDetailScreen`이 이 함수로 ProfileResponse를 받음 */
-export async function getMatchUser(profileId: number): Promise<ProfileResponse> {
+export async function getMatchUser(
+  profileId: number,
+): Promise<ProfileResponse> {
   const { data } = await apiClient.get<ProfileResponse>(
     `/api/profiles/${profileId}`,
   );
@@ -54,8 +56,9 @@ export async function getSentMatches(): Promise<MatchResponse[]> {
 }
 
 export async function getReceivedMatches(): Promise<MatchResponse[]> {
-  const { data } =
-    await apiClient.get<MatchResponse[]>('/api/matches/received');
+  const { data } = await apiClient.get<MatchResponse[]>(
+    '/api/matches/received',
+  );
   return data;
 }
 

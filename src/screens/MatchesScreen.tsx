@@ -10,10 +10,7 @@ import { localTimeToString } from '../types/schedule';
 import type { ScheduleResponse } from '../types/schedule';
 import type { Meeting, MeetingStatus } from '../types/meeting';
 
-function toMeeting(
-  schedule: ScheduleResponse,
-  status: MeetingStatus,
-): Meeting {
+function toMeeting(schedule: ScheduleResponse, status: MeetingStatus): Meeting {
   return {
     scheduleId: schedule.id,
     matchId: schedule.matchId,

@@ -34,9 +34,6 @@ export async function completeOnboarding(
   payload: OnboardingPayload,
 ): Promise<ProfileResponse> {
   const body = buildProfileCreateRequest(payload);
-  const { data } = await apiClient.post<ProfileResponse>(
-    '/api/profiles',
-    body,
-  );
+  const { data } = await apiClient.post<ProfileResponse>('/api/profiles', body);
   return data;
 }

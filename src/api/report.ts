@@ -41,9 +41,8 @@ export async function updateReport(
 }
 
 export async function getMyReports(): Promise<ActivityReportResponse[]> {
-  const { data } = await apiClient.get<ActivityReportResponse[]>(
-    '/api/reports/my',
-  );
+  const { data } =
+    await apiClient.get<ActivityReportResponse[]>('/api/reports/my');
   return data;
 }
 

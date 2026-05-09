@@ -46,16 +46,16 @@ export const GRADE_OPTIONS: readonly Grade[] = [
 
 /** Interest(한글) → Field(백엔드 enum) 매핑 */
 export const FIELD_MAP: Record<Interest, Field> = {
-  '백엔드': 'BACKEND',
-  '프론트엔드': 'FRONTEND',
+  백엔드: 'BACKEND',
+  프론트엔드: 'FRONTEND',
   'AI/에이전트': 'AI_AGENT',
   'UI/UX': 'UI_UX',
   'PM/기획': 'PLANNING_PM',
-  '임베디드': 'EMBEDDED',
+  임베디드: 'EMBEDDED',
   Android: 'ANDROID',
   iOS: 'IOS',
-  '게임': 'GAME',
-  '그래픽스': 'GRAPHICS',
+  게임: 'GAME',
+  그래픽스: 'GRAPHICS',
 };
 
 /** Grade(한글) → 백엔드 enum 매핑 */

@@ -11,11 +11,7 @@ export function LoginScreen() {
     <div className="flex min-h-screen items-center justify-center bg-black">
       <div className="relative mx-auto h-[844px] w-[390px] bg-white">
         <div className="absolute left-1/2 top-[200px] flex -translate-x-1/2 flex-col items-center gap-4">
-          <CodemateLogo
-            width={142}
-            height={139}
-            className="text-blue-500"
-          />
+          <CodemateLogo width={142} height={139} className="text-blue-500" />
           <CodemateWordmark className="text-blue-500" />
           <p className="mt-2 whitespace-nowrap text-center font-inter text-[16px] font-medium leading-[24px] text-[#8E8E8E]">
             대학생 개발자를 위한
