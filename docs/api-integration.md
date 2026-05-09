@@ -21,14 +21,16 @@
 - `success === false` → `Error(message)` throw
 - 정상 시 `response.data = response.data.data`로 unwrap (호출부에서 `.data`로 접근하면 `T` 직접 받음)
 
-### 0-3. 인증 (placeholder)
-- request interceptor가 `Authorization: Bearer ${token}` 자동 부착
-- token 출처는 추후 (인증 흐름 별도 작업) — 임시로 `localStorage.getItem('jwt')` 또는 `useAuthStore` placeholder
-- 401 응답 시 동작은 추후 (logout/redirect)
+### 0-3. 인증 (Google OAuth2 → JWT)
+- Spring Security 기본 흐름: `GET ${API}/oauth2/authorization/google` → Google → 백엔드 callback → frontend `/auth/callback?token=<JWT>` redirect
+- `/auth/callback`이 token query param 파싱(`jwt-decode`)해 `useAuthStore.login(token)` 호출 → localStorage 저장 + state 갱신 → `/home` 이동
+- request interceptor가 `useAuthStore.token`을 `Authorization: Bearer` 헤더로 자동 부착
+- 401 응답 시 `useAuthStore.logout()` + `/login` redirect
+- 앱 시작 시 `App.tsx`의 `useAuthStore.hydrate()`가 localStorage에서 토큰 복원, 만료 시 자동 logout
 
-### 0-4. 내 userId (placeholder)
-- 일부 endpoint(`GET /api/chat/rooms?userId=`)가 본인 userId 필요
-- 출처는 추후 (JWT decode 또는 `/api/users/me`) — 임시로 `useAuthStore.userId` placeholder
+### 0-4. 내 userId
+- JWT payload에서 추출 (`payload.userId` 우선, 없으면 `payload.sub` 숫자 변환)
+- `useAuthStore.userId`로 노출 — `useChatRoomsQuery` 등에서 query disabled 가드
 
 ---
 

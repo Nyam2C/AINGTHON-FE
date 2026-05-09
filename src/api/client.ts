@@ -1,5 +1,7 @@
 import axios, { AxiosError, type AxiosResponse } from 'axios';
 
+import { useAuthStore } from '../store/useAuthStore';
+
 type ApiResponse<T> = {
   success: boolean;
   data: T;
@@ -12,17 +14,14 @@ export const apiClient = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
-// Request: Bearer JWT 자동 부착 (token 출처는 추후 — 임시 localStorage)
 apiClient.interceptors.request.use(config => {
-  const token =
-    typeof window !== 'undefined' ? window.localStorage.getItem('jwt') : null;
+  const token = useAuthStore.getState().token;
   if (token) {
     config.headers.set?.('Authorization', `Bearer ${token}`);
   }
   return config;
 });
 
-// Response: ApiResponse<T> wrapper unwrap (success=false → throw)
 apiClient.interceptors.response.use(
   (response: AxiosResponse<ApiResponse<unknown>>) => {
     const body = response.data;
@@ -35,6 +34,15 @@ apiClient.interceptors.response.use(
     return response;
   },
   (error: AxiosError<ApiResponse<unknown>>) => {
+    if (error.response?.status === 401) {
+      useAuthStore.getState().logout();
+      if (
+        typeof window !== 'undefined' &&
+        window.location.pathname !== '/login'
+      ) {
+        window.location.href = '/login';
+      }
+    }
     const message = error.response?.data?.message ?? error.message;
     return Promise.reject(new Error(message));
   },

@@ -1,9 +1,11 @@
 import { createBrowserRouter } from 'react-router-dom';
 
+import { AuthCallbackScreen } from '../screens/AuthCallbackScreen';
 import { ChatListScreen } from '../screens/ChatListScreen';
 import { ChatRoomScreen } from '../screens/ChatRoomScreen';
 import { HomeScreen } from '../screens/HomeScreen';
 import { LandingScreen } from '../screens/LandingScreen';
+import { LoginScreen } from '../screens/LoginScreen';
 import { LoadingScreen } from '../screens/LoadingScreen';
 import { MatchDetailScreen } from '../screens/MatchDetailScreen';
 import { MatchRequestCompleteScreen } from '../screens/MatchRequestCompleteScreen';
@@ -91,5 +93,13 @@ export const router = createBrowserRouter([
   {
     path: '/my',
     element: <MyPageScreen />,
+  },
+  {
+    path: '/login',
+    element: <LoginScreen />,
+  },
+  {
+    path: '/auth/callback',
+    element: <AuthCallbackScreen />,
   },
 ]);
