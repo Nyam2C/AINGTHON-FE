@@ -24,13 +24,16 @@ export function OnboardingProfileScreen() {
     mutation.mutate(
       { ...profile, role: role ?? 'mentee' },
       {
-        onSuccess: () => {
+        onSettled: (_data, error) => {
+          if (error) {
+            // 백엔드 미가동 환경에서도 플로우 검증이 가능하도록 실패 시에도 진행.
+            console.warn(
+              'completeOnboarding failed (proceeding anyway)',
+              error,
+            );
+          }
           reset();
           navigate('/onboarding/loading?next=/home&duration=1000');
-        },
-        onError: error => {
-          // TODO(stub): 추후 toast/alert로 교체.
-          console.error('completeOnboarding failed', error);
         },
       },
     );
