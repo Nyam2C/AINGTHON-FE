@@ -19,7 +19,7 @@ export function MatchDetailScreen() {
   };
 
   return (
-    <div className="flex min-h-screen items-start justify-center bg-black">
+    <div className="flex min-h-screen items-center justify-center bg-black">
       <div className="relative mx-auto w-[390px] min-h-[844px] bg-white pt-[20px] pb-[100px]">
         {isLoading && (
           <div className="flex justify-center mt-[80px]">

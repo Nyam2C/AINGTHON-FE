@@ -35,7 +35,7 @@ export function SearchScreen() {
   const handleKeywordChip = (kw: string) => setKeyword(kw);
 
   return (
-    <div className="flex min-h-screen items-start justify-center bg-black">
+    <div className="flex min-h-screen items-center justify-center bg-black">
       <div className="relative mx-auto w-[390px] min-h-[844px] bg-white pt-[20px] pb-[100px]">
         <div className="px-[34px]">
           <SearchBar

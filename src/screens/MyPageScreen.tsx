@@ -102,7 +102,7 @@ export function MyPageScreen() {
   };
 
   const renderFrame = (children: React.ReactNode) => (
-    <div className="flex min-h-screen items-start justify-center bg-black">
+    <div className="flex min-h-screen items-center justify-center bg-black">
       <div className="relative mx-auto w-[390px] min-h-[844px] bg-white px-[34px] pt-[40px] pb-[160px]">
         {children}
         <BottomNav active="profile" />

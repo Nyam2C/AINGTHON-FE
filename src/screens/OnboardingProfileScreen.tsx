@@ -40,7 +40,7 @@ export function OnboardingProfileScreen() {
   };
 
   return (
-    <div className="flex min-h-screen items-start justify-center bg-black">
+    <div className="flex min-h-screen items-center justify-center bg-black">
       <div className="relative mx-auto w-[390px] min-h-[844px] bg-white motion-safe:animate-fade-in motion-reduce:animate-none px-[34px] pt-[80px] pb-[40px]">
         <h1 className="font-inter text-[32px] font-bold leading-[40px] text-black">
           나를 소개해 주세요.

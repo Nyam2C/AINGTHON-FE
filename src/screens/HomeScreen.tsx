@@ -10,7 +10,7 @@ export function HomeScreen() {
   const handleSearchClick = () => navigate('/search');
 
   return (
-    <div className="flex min-h-screen items-start justify-center bg-black">
+    <div className="flex min-h-screen items-center justify-center bg-black">
       <div className="relative mx-auto w-[390px] min-h-[844px] bg-white pb-[80px]">
         <header className="px-[34px] pt-[20px] flex items-center justify-between">
           <CodemateWordmark className="!text-[20px] !leading-[24px]" />
