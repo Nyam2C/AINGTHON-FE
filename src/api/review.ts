@@ -1,22 +1,23 @@
 import { apiClient } from './client';
-import type { ReviewPayload, ReviewResponse } from '../types/review';
+import type { ReviewCreateRequest, ReviewResponse } from '../types/review';
 
-function warnFallback(label: string, error: unknown) {
-  console.warn(`${label} fallback to mocks (backend unavailable)`, error);
+export async function createReview(
+  body: ReviewCreateRequest,
+): Promise<ReviewResponse> {
+  const { data } = await apiClient.post<ReviewResponse>('/api/reviews', body);
+  return data;
 }
 
-export async function submitReview(
-  payload: ReviewPayload,
-): Promise<ReviewResponse> {
-  const { matchId, ...body } = payload;
-  try {
-    const { data } = await apiClient.post<ReviewResponse>(
-      `/matches/${encodeURIComponent(matchId)}/review`,
-      body,
-    );
-    return data;
-  } catch (error) {
-    warnFallback('submitReview', error);
-    return { reviewId: `mock-${Date.now()}` };
-  }
+export async function getWrittenReviews(): Promise<ReviewResponse[]> {
+  const { data } = await apiClient.get<ReviewResponse[]>(
+    '/api/reviews/written',
+  );
+  return data;
+}
+
+export async function getReceivedReviews(): Promise<ReviewResponse[]> {
+  const { data } = await apiClient.get<ReviewResponse[]>(
+    '/api/reviews/received',
+  );
+  return data;
 }

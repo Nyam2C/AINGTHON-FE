@@ -1,7 +1,21 @@
-export type ReportPayload = {
-  insights: string; // textarea
-  nextGoals: string;
-  // files는 FormData로 별도 append; payload type엔 미포함
+export type ActivityReportCreateRequest = {
+  scheduleId: number;
+  insights?: string;
+  nextGoal?: string;
 };
 
-export type ReportResponse = { reportId: string; fileNames: string[] };
+export type ActivityReportUpdateRequest = {
+  insights?: string;
+  nextGoal?: string;
+};
+
+export type ActivityReportResponse = {
+  id: number;
+  scheduleId: number;
+  userId: number;
+  insights?: string;
+  nextGoal?: string;
+  attachmentUrl?: string;
+  createdAt: string;
+  updatedAt: string;
+};

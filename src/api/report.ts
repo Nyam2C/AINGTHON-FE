@@ -1,31 +1,57 @@
 import { apiClient } from './client';
-import type { ReportPayload, ReportResponse } from '../types/report';
+import type {
+  ActivityReportCreateRequest,
+  ActivityReportResponse,
+  ActivityReportUpdateRequest,
+} from '../types/report';
 
-function warnFallback(label: string, error: unknown) {
-  console.warn(`${label} fallback to mocks (backend unavailable)`, error);
+export async function createReport(
+  body: ActivityReportCreateRequest,
+): Promise<ActivityReportResponse> {
+  const { data } = await apiClient.post<ActivityReportResponse>(
+    '/api/reports',
+    body,
+  );
+  return data;
 }
 
-export async function submitReport(
-  matchId: string,
-  payload: ReportPayload,
-  files: File[],
-): Promise<ReportResponse> {
+export async function uploadReportAttachment(
+  reportId: number,
+  file: File,
+): Promise<ActivityReportResponse> {
   const form = new FormData();
-  form.append('insights', payload.insights);
-  form.append('nextGoals', payload.nextGoals);
-  files.forEach(f => form.append('files', f));
-  try {
-    const { data } = await apiClient.post<ReportResponse>(
-      `/matches/${encodeURIComponent(matchId)}/report`,
-      form,
-      { headers: { 'Content-Type': 'multipart/form-data' } },
-    );
-    return data;
-  } catch (error) {
-    warnFallback('submitReport', error);
-    return {
-      reportId: `mock-${Date.now()}`,
-      fileNames: files.map(f => f.name),
-    };
-  }
+  form.append('file', file);
+  const { data } = await apiClient.post<ActivityReportResponse>(
+    `/api/reports/${reportId}/attachment`,
+    form,
+    { headers: { 'Content-Type': 'multipart/form-data' } },
+  );
+  return data;
+}
+
+export async function updateReport(
+  reportId: number,
+  body: ActivityReportUpdateRequest,
+): Promise<ActivityReportResponse> {
+  const { data } = await apiClient.put<ActivityReportResponse>(
+    `/api/reports/${reportId}`,
+    body,
+  );
+  return data;
+}
+
+export async function getMyReports(): Promise<ActivityReportResponse[]> {
+  const { data } = await apiClient.get<ActivityReportResponse[]>(
+    '/api/reports/my',
+  );
+  return data;
+}
+
+export async function getReport(
+  reportId: number,
+): Promise<ActivityReportResponse> {
+  const { data } = await apiClient.get<ActivityReportResponse>(
+    `/api/reports/${reportId}`,
+  );
+  return data;
 }

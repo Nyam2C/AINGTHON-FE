@@ -8,28 +8,26 @@ import { useSubmitReportMutation } from '../hooks/useSubmitReportMutation';
 
 export function ReportScreen() {
   const navigate = useNavigate();
-  const { matchId } = useParams<{ matchId: string }>();
+  const { scheduleId: scheduleIdParam } = useParams<{ scheduleId: string }>();
+  const scheduleId = scheduleIdParam ? Number(scheduleIdParam) : NaN;
 
   const [insights, setInsights] = useState('');
-  const [nextGoals, setNextGoals] = useState('');
-  const [files, setFiles] = useState<File[]>([]);
+  const [nextGoal, setNextGoal] = useState('');
+  const [file, setFile] = useState<File | null>(null);
 
   const submitReport = useSubmitReportMutation();
 
   const handleBack = () => navigate(-1);
 
-  const handleAddFiles = (selected: File[]) => {
-    setFiles(prev => [...prev, ...selected]);
-  };
-
-  const handleRemoveFile = (index: number) => {
-    setFiles(prev => prev.filter((_, i) => i !== index));
-  };
-
   const handleSubmit = () => {
-    if (!matchId) return;
+    if (!Number.isFinite(scheduleId)) return;
     submitReport.mutate(
-      { matchId, payload: { insights, nextGoals }, files },
+      {
+        scheduleId,
+        insights: insights.trim() ? insights : undefined,
+        nextGoal: nextGoal.trim() ? nextGoal : undefined,
+        file,
+      },
       {
         onSuccess: () => navigate('/matches'),
         onError: err => console.error(err),
@@ -65,15 +63,11 @@ export function ReportScreen() {
           />
           <LabeledTextarea
             label="다음 목표 (내가 실천할 일)"
-            value={nextGoals}
-            onChange={setNextGoals}
+            value={nextGoal}
+            onChange={setNextGoal}
             rows={5}
           />
-          <FileAttachField
-            files={files}
-            onAdd={handleAddFiles}
-            onRemove={handleRemoveFile}
-          />
+          <FileAttachField file={file} onChange={setFile} />
           <button
             type="button"
             onClick={handleSubmit}

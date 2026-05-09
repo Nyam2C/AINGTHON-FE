@@ -1,15 +1,15 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { submitReview } from '../api/review';
-import type { ReviewPayload, ReviewResponse } from '../types/review';
+import { createReview } from '../api/review';
+import type { ReviewCreateRequest, ReviewResponse } from '../types/review';
 
 export function useSubmitReviewMutation() {
   const queryClient = useQueryClient();
 
-  return useMutation<ReviewResponse, Error, ReviewPayload>({
-    mutationFn: submitReview,
+  return useMutation<ReviewResponse, Error, ReviewCreateRequest>({
+    mutationFn: createReview,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['matches'] });
+      queryClient.invalidateQueries({ queryKey: ['reviews'] });
     },
   });
 }

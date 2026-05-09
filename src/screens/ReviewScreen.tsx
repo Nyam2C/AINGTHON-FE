@@ -8,11 +8,12 @@ import { useSubmitReviewMutation } from '../hooks/useSubmitReviewMutation';
 
 export function ReviewScreen() {
   const navigate = useNavigate();
-  const { matchId } = useParams<{ matchId: string }>();
+  const { scheduleId: scheduleIdParam } = useParams<{ scheduleId: string }>();
+  const scheduleId = scheduleIdParam ? Number(scheduleIdParam) : NaN;
 
-  const [rating, setRating] = useState(0);
+  const [satisfaction, setSatisfaction] = useState(0);
   const [oneLineReview, setOneLineReview] = useState('');
-  const [detail, setDetail] = useState('');
+  const [mainContent, setMainContent] = useState('');
 
   const submitReview = useSubmitReviewMutation();
 
@@ -20,12 +21,24 @@ export function ReviewScreen() {
 
   const handleBack = () => navigate(-1);
 
+  const canSubmit =
+    Number.isFinite(scheduleId) &&
+    satisfaction >= 1 &&
+    satisfaction <= 5 &&
+    oneLineReview.trim().length > 0 &&
+    !submitReview.isPending;
+
   const handleSubmit = () => {
-    if (!matchId) return;
+    if (!canSubmit) return;
     submitReview.mutate(
-      { matchId, rating, oneLineReview, detail },
       {
-        onSuccess: () => navigate(`/matches/${matchId}/report`),
+        scheduleId,
+        satisfaction,
+        oneLineReview,
+        mainContent: mainContent.trim() ? mainContent : undefined,
+      },
+      {
+        onSuccess: () => navigate(`/schedules/${scheduleId}/report`),
         onError: err => console.error(err),
       },
     );
@@ -51,8 +64,8 @@ export function ReviewScreen() {
           {partnerName} 멘토님과의 멘토링은 어떠셨나요?
         </h2>
         <RatingStars
-          value={rating}
-          onChange={setRating}
+          value={satisfaction}
+          onChange={setSatisfaction}
           className="justify-center mb-[32px]"
         />
         <div className="flex flex-col items-center gap-[24px]">
@@ -64,14 +77,14 @@ export function ReviewScreen() {
           />
           <LabeledTextarea
             label="주요 내용 (선택)"
-            value={detail}
-            onChange={setDetail}
+            value={mainContent}
+            onChange={setMainContent}
             rows={5}
           />
           <button
             type="button"
             onClick={handleSubmit}
-            disabled={submitReview.isPending}
+            disabled={!canSubmit}
             className="w-[321px] h-[52px] rounded-[9px] bg-blue-500 text-white text-[16px] font-medium disabled:opacity-60"
           >
             제출하기

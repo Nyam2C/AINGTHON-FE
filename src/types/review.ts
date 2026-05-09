@@ -1,8 +1,19 @@
-export type ReviewPayload = {
-  matchId: string;
-  rating: number; // 0~5 (검증 임시 해제, 0 허용)
-  oneLineReview: string; // max 100, 빈값 허용
-  detail: string; // textarea, 빈값 허용
+export type ReviewCreateRequest = {
+  scheduleId: number;
+  satisfaction: number; // 1~5 required
+  oneLineReview: string; // max 100 required
+  mainContent?: string;
 };
 
-export type ReviewResponse = { reviewId: string };
+export type ReviewResponse = {
+  id: number;
+  scheduleId: number;
+  reviewerId: number;
+  reviewerName: string;
+  revieweeId: number;
+  revieweeName: string;
+  satisfaction: number;
+  oneLineReview: string;
+  mainContent?: string;
+  createdAt: string;
+};

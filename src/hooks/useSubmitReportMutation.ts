@@ -1,17 +1,28 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { submitReport } from '../api/report';
-import type { ReportPayload, ReportResponse } from '../types/report';
+import { createReport, uploadReportAttachment } from '../api/report';
+import type {
+  ActivityReportCreateRequest,
+  ActivityReportResponse,
+} from '../types/report';
 
-type Variables = {
-  matchId: string;
-  payload: ReportPayload;
-  files: File[];
+type Variables = ActivityReportCreateRequest & {
+  file?: File | null;
 };
 
 export function useSubmitReportMutation() {
-  return useMutation<ReportResponse, Error, Variables>({
-    mutationFn: ({ matchId, payload, files }) =>
-      submitReport(matchId, payload, files),
+  const queryClient = useQueryClient();
+
+  return useMutation<ActivityReportResponse, Error, Variables>({
+    mutationFn: async ({ file, ...body }) => {
+      const report = await createReport(body);
+      if (file) {
+        return uploadReportAttachment(report.id, file);
+      }
+      return report;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['reports'] });
+    },
   });
 }

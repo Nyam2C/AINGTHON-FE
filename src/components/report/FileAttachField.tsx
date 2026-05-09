@@ -3,27 +3,27 @@ import { useRef, type ChangeEvent } from 'react';
 import { PaperclipIcon } from '../common/icons/PaperclipIcon';
 
 type FileAttachFieldProps = {
-  files: File[];
-  onAdd: (files: File[]) => void;
-  onRemove: (index: number) => void;
+  file: File | null;
+  onChange: (file: File | null) => void;
   className?: string;
 };
 
 export function FileAttachField({
-  files,
-  onAdd,
-  onRemove,
+  file,
+  onChange,
   className,
 }: FileAttachFieldProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleClick = () => inputRef.current?.click();
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const selected = e.target.files ? Array.from(e.target.files) : [];
-    if (selected.length > 0) onAdd(selected);
+  const handleSelect = (e: ChangeEvent<HTMLInputElement>) => {
+    const selected = e.target.files?.[0] ?? null;
+    if (selected) onChange(selected);
     e.target.value = '';
   };
+
+  const handleRemove = () => onChange(null);
 
   return (
     <div className={`flex flex-col gap-[8px] w-[321px] ${className ?? ''}`}>
@@ -46,30 +46,22 @@ export function FileAttachField({
       <input
         ref={inputRef}
         type="file"
-        multiple
         hidden
-        onChange={handleChange}
+        onChange={handleSelect}
         aria-label="파일 선택"
       />
-      {files.length > 0 && (
-        <ul className="flex flex-col gap-[6px]">
-          {files.map((f, i) => (
-            <li
-              key={`${f.name}-${i}`}
-              className="flex items-center justify-between bg-[#F2F4F7] rounded-[8px] px-[12px] py-[8px]"
-            >
-              <span className="text-[14px] text-black truncate">{f.name}</span>
-              <button
-                type="button"
-                onClick={() => onRemove(i)}
-                aria-label={`${f.name} 삭제`}
-                className="text-[#8E8E8E] text-[16px]"
-              >
-                ×
-              </button>
-            </li>
-          ))}
-        </ul>
+      {file && (
+        <div className="flex items-center justify-between bg-[#F2F4F7] rounded-[8px] px-[12px] py-[8px]">
+          <span className="text-[14px] text-black truncate">{file.name}</span>
+          <button
+            type="button"
+            onClick={handleRemove}
+            aria-label={`${file.name} 삭제`}
+            className="text-[#8E8E8E] text-[16px]"
+          >
+            ×
+          </button>
+        </div>
       )}
     </div>
   );
