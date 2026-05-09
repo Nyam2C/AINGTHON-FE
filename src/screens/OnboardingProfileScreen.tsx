@@ -20,20 +20,9 @@ export function OnboardingProfileScreen() {
   const reset = useOnboardingStore(s => s.reset);
   const mutation = useCompleteOnboardingMutation();
 
-  const isValid =
-    profile.name.trim().length > 0 &&
-    profile.bio.trim().length > 0 &&
-    profile.bio.length <= 30 &&
-    profile.interests.length >= 1 &&
-    profile.major !== null &&
-    profile.school.trim().length > 0 &&
-    profile.grade !== null &&
-    role !== null;
-
   const handleSubmit = () => {
-    if (!isValid || role === null) return;
     mutation.mutate(
-      { ...profile, role },
+      { ...profile, role: role ?? 'mentee' },
       {
         onSuccess: () => {
           reset();
@@ -138,7 +127,7 @@ export function OnboardingProfileScreen() {
             <PrimaryButton
               label="시작하기"
               width={321}
-              disabled={!isValid || mutation.isPending}
+              disabled={mutation.isPending}
               onClick={handleSubmit}
             />
             <PaginationDots currentIndex={2} />
