@@ -1,5 +1,6 @@
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
+import { BottomNav } from '../components/common/BottomNav';
 import { CheckCircleIcon } from '../components/match/CheckCircleIcon';
 import { PrimaryButton } from '../components/onboarding/PrimaryButton';
 
@@ -31,7 +32,7 @@ export function MatchRequestCompleteScreen() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-black">
-      <div className="relative mx-auto w-[390px] min-h-[844px] bg-white flex flex-col items-center pt-[200px]">
+      <div className="relative mx-auto w-[390px] min-h-[844px] bg-white flex flex-col items-center pt-[200px] pb-[80px]">
         <CheckCircleIcon size={113} />
 
         <h1 className="mt-[20px] font-inter text-[24px] font-semibold text-black">
@@ -57,6 +58,7 @@ export function MatchRequestCompleteScreen() {
             내 신청 내역 보기
           </button>
         </div>
+        <BottomNav active="search" />
       </div>
     </div>
   );
