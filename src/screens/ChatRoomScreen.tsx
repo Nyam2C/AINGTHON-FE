@@ -5,6 +5,7 @@ import { ChatInputBar } from '../components/chat/ChatInputBar';
 import { ChatRoomHeader } from '../components/chat/ChatRoomHeader';
 import { MessageList } from '../components/chat/MessageList';
 import { ScheduleEditSheet } from '../components/chat/ScheduleEditSheet';
+import { BottomNav } from '../components/common/BottomNav';
 import { useChatMessagesQuery } from '../hooks/useChatMessagesQuery';
 import { useSendMessageMutation } from '../hooks/useSendMessageMutation';
 import { useUpdateScheduleMutation } from '../hooks/useUpdateScheduleMutation';
@@ -72,10 +73,15 @@ export function ChatRoomScreen() {
           messages={messages ?? []}
           currentUserId={MENTEE_USER_ID}
           onEditSchedule={handleEditSchedule}
-          className="flex-1 overflow-y-auto pb-[80px]"
+          className="flex-1 overflow-y-auto pb-[160px]"
         />
         <div ref={bottomRef} />
-        <ChatInputBar onSend={handleSend} disabled={sendMessage.isPending} />
+        <ChatInputBar
+          onSend={handleSend}
+          disabled={sendMessage.isPending}
+          className="bottom-[80px]"
+        />
+        <BottomNav active="chat" />
         {editingSchedule && matchId && (
           <ScheduleEditSheet
             matchId={matchId}
