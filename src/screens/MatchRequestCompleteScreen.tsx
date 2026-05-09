@@ -1,4 +1,4 @@
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { CheckCircleIcon } from '../components/match/CheckCircleIcon';
 import { PrimaryButton } from '../components/onboarding/PrimaryButton';
@@ -10,13 +10,20 @@ type CompleteState = {
 
 export function MatchRequestCompleteScreen() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { userId } = useParams<{ userId: string }>();
   const state = (location.state ?? {}) as CompleteState;
   const userName = state.userName ?? '';
   const matchRequestId = state.matchRequestId ?? '';
 
   const handleOpenChat = () => {
-    console.warn('chat route not implemented', { matchRequestId, userId });
+    if (!matchRequestId) {
+      console.warn('matchRequestId missing; cannot open chat', { userId });
+      return;
+    }
+    navigate(`/chat/${matchRequestId}`, {
+      state: { userName, chatRoomId: matchRequestId },
+    });
   };
   const handleViewMyRequests = () => {
     console.warn('match requests route not implemented');
