@@ -28,7 +28,7 @@ export function MatchRequestCompleteScreen() {
     });
   };
   const handleViewMyRequests = () => {
-    console.warn('match requests route not implemented');
+    navigate('/matches');
   };
 
   return (
