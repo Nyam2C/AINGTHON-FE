@@ -9,6 +9,7 @@ import { MatchDetailScreen } from '../screens/MatchDetailScreen';
 import { MatchRequestCompleteScreen } from '../screens/MatchRequestCompleteScreen';
 import { MatchRequestScreen } from '../screens/MatchRequestScreen';
 import { MatchesScreen } from '../screens/MatchesScreen';
+import { MyPageScreen } from '../screens/MyPageScreen';
 import { OnboardingIntroScreen } from '../screens/OnboardingIntroScreen';
 import { OnboardingProfileScreen } from '../screens/OnboardingProfileScreen';
 import { OnboardingRoleScreen } from '../screens/OnboardingRoleScreen';
@@ -86,5 +87,9 @@ export const router = createBrowserRouter([
   {
     path: '/matches/:matchId/report',
     element: <ReportScreen />,
+  },
+  {
+    path: '/my',
+    element: <MyPageScreen />,
   },
 ]);

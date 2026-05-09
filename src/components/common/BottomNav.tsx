@@ -16,7 +16,7 @@ const TABS: ReadonlyArray<{
   { key: 'search', label: '검색', path: '/search' },
   { key: 'matching', label: '매칭', path: '/matches' },
   { key: 'chat', label: '채팅', path: '/chat' },
-  { key: 'profile', label: '마이', path: null },
+  { key: 'profile', label: '마이', path: '/my' },
 ];
 
 export function BottomNav({ active, className }: BottomNavProps) {
