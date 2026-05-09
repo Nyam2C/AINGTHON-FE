@@ -17,10 +17,7 @@ export function MatchCandidateCard({
     onViewProfile(user.id);
   };
 
-  const subtitle = [
-    user.university,
-    user.grade ? gradeLabel(user.grade) : null,
-  ]
+  const subtitle = [user.university, user.grade ? gradeLabel(user.grade) : null]
     .filter(Boolean)
     .join(' · ');
 
