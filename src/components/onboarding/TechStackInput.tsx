@@ -4,6 +4,7 @@ type TechStackInputProps = {
   value: string[];
   onChange: (next: string[]) => void;
   max?: number;
+  error?: string;
   className?: string;
 };
 
@@ -11,6 +12,7 @@ export function TechStackInput({
   value,
   onChange,
   max = 10,
+  error,
   className,
 }: TechStackInputProps) {
   const [draft, setDraft] = useState('');
@@ -27,6 +29,10 @@ export function TechStackInput({
   const handleRemove = (target: string) => {
     onChange(value.filter(v => v !== target));
   };
+
+  const borderClass = error
+    ? 'border-red-500 focus:border-red-500'
+    : 'border-[#94A3B8] focus:border-blue-500';
 
   return (
     <div className={className}>
@@ -45,7 +51,8 @@ export function TechStackInput({
             }
           }}
           placeholder="예: React, TypeScript"
-          className="flex-1 bg-white border border-[#E6EBF3] rounded-[8px] px-[14px] py-[12px] text-[14px] placeholder:text-[#8E8E8E] focus:outline-none focus:border-blue-500"
+          aria-invalid={Boolean(error)}
+          className={`flex-1 bg-white border ${borderClass} rounded-[8px] px-[14px] py-[12px] text-[14px] placeholder:text-[#8E8E8E] focus:outline-none`}
         />
         <button
           type="button"
@@ -74,6 +81,9 @@ export function TechStackInput({
             </span>
           ))}
         </div>
+      )}
+      {error && (
+        <p className="mt-[6px] text-[12px] text-red-500">{error}</p>
       )}
     </div>
   );

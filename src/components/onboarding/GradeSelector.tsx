@@ -18,7 +18,7 @@ export function GradeSelector({
         const selected = value === grade;
         const stateClass = selected
           ? 'bg-blue-500 text-white border-blue-500'
-          : 'bg-white text-black border-[#E6EBF3]';
+          : 'bg-white text-black border-[#94A3B8]';
         return (
           <button
             key={grade}

@@ -18,7 +18,7 @@ export function MajorToggle({ value, onChange, className }: MajorToggleProps) {
         const selected = value === option.value;
         const stateClass = selected
           ? 'bg-blue-500 text-white border-blue-500'
-          : 'bg-white text-black border-[#E6EBF3]';
+          : 'bg-white text-black border-[#94A3B8]';
         return (
           <button
             key={option.value}
