@@ -1,13 +1,10 @@
-import { useNavigate } from 'react-router-dom';
-
+import { getGoogleLoginUrl } from '../api/auth';
 import { PaginationDots } from '../components/onboarding/PaginationDots';
 import { PrimaryButton } from '../components/onboarding/PrimaryButton';
 
 export function OnboardingIntroScreen() {
-  const navigate = useNavigate();
-
   const handleStart = () => {
-    navigate('/onboarding/loading?next=/onboarding/role&duration=700');
+    window.location.href = getGoogleLoginUrl();
   };
 
   return (
