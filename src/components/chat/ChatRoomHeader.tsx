@@ -9,8 +9,8 @@ type ChatRoomHeaderProps = {
 };
 
 function roleLabel(role: Role): string {
-  if (role === 'mentor') return 'M 멘토';
-  if (role === 'mentee') return 'M 멘티';
+  if (role === 'mentor') return '멘토';
+  if (role === 'mentee') return '멘티';
   return '멘토/멘티';
 }
 
@@ -38,8 +38,15 @@ export function ChatRoomHeader({
         <span className="font-inter text-[20px] font-medium text-black">
           {partnerName}
         </span>
-        <span className="font-inter text-[13px] text-blue-500">
-          [{roleLabel(partnerRole)}]
+        <span className="font-inter text-[13px] text-blue-500 inline-flex items-center gap-[3px]">
+          [
+          <img
+            src="/icon/matching.svg"
+            alt=""
+            aria-hidden="true"
+            className="h-[12px] w-[12px]"
+          />
+          {roleLabel(partnerRole)}]
         </span>
       </div>
       <span className="font-inter text-[13px] text-[#8E8E8E]">

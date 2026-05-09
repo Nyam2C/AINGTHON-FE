@@ -14,8 +14,8 @@ type MeetingCardProps = {
 };
 
 function roleLabel(role: Role): string {
-  if (role === 'mentor') return 'M 멘토';
-  if (role === 'mentee') return 'M 멘티';
+  if (role === 'mentor') return '멘토';
+  if (role === 'mentee') return '멘티';
   return '멘토/멘티';
 }
 
@@ -61,8 +61,15 @@ export function MeetingCard({
         <span className="text-[20px] font-medium text-black">
           {meeting.partnerName}
         </span>
-        <span className="text-[13px] text-blue-500">
-          [{roleLabel(meeting.partnerRole)}]
+        <span className="text-[13px] text-blue-500 inline-flex items-center gap-[3px]">
+          [
+          <img
+            src="/icon/matching.svg"
+            alt=""
+            aria-hidden="true"
+            className="h-[12px] w-[12px]"
+          />
+          {roleLabel(meeting.partnerRole)}]
         </span>
         {meeting.status === 'upcoming' && (
           <span className="ml-auto text-[16px] font-semibold text-blue-500">
