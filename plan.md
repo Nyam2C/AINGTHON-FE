@@ -11,7 +11,6 @@
 | 스타일링 | NativeWind (Tailwind for RN) |
 | 라우팅 | React Navigation |
 | API 통신 | Axios + TanStack Query |
-| UI 라이브러리 | Gluestack UI |
 | 패키지 매니저 | pnpm |
 | 린터 | oxlint |
 | 포매터 | oxformat |
