@@ -1,35 +1,38 @@
 import { create } from 'zustand';
 
-import type { RoleFilter } from '../types/match';
-import type { Grade } from '../types/onboarding';
+import type { GradeEnum } from '../types/profile';
 
 type SearchFilterStore = {
   keyword: string;
-  role: RoleFilter;
-  techStack: string[];
-  grades: Grade[];
+  techStack: string;
+  sameUniversity: boolean;
+  grade: GradeEnum | null;
+  page: number;
   setKeyword: (v: string) => void;
-  setRole: (v: RoleFilter) => void;
-  setTechStack: (v: string[]) => void;
-  setGrades: (v: Grade[]) => void;
+  setTechStack: (v: string) => void;
+  setSameUniversity: (v: boolean) => void;
+  setGrade: (v: GradeEnum | null) => void;
+  setPage: (v: number) => void;
   reset: () => void;
 };
 
 const INITIAL: Pick<
   SearchFilterStore,
-  'keyword' | 'role' | 'techStack' | 'grades'
+  'keyword' | 'techStack' | 'sameUniversity' | 'grade' | 'page'
 > = {
   keyword: '',
-  role: 'all',
-  techStack: [],
-  grades: [],
+  techStack: '',
+  sameUniversity: false,
+  grade: null,
+  page: 0,
 };
 
 export const useSearchFilterStore = create<SearchFilterStore>(set => ({
   ...INITIAL,
   setKeyword: v => set({ keyword: v }),
-  setRole: v => set({ role: v }),
   setTechStack: v => set({ techStack: v }),
-  setGrades: v => set({ grades: v }),
+  setSameUniversity: v => set({ sameUniversity: v }),
+  setGrade: v => set({ grade: v }),
+  setPage: v => set({ page: v }),
   reset: () => set(INITIAL),
 }));

@@ -1,29 +1,32 @@
-import type { Grade } from '../../types/onboarding';
-import { GRADE_OPTIONS } from '../../types/onboarding';
+import type { GradeEnum } from '../../types/profile';
+import { gradeLabel } from '../../utils/profileLabel';
+
+const GRADE_VALUES: readonly GradeEnum[] = [
+  'YEAR_1',
+  'YEAR_2',
+  'YEAR_3',
+  'YEAR_4_OR_MORE',
+] as const;
 
 type GradeFilterProps = {
-  value: Grade[];
-  onChange: (v: Grade[]) => void;
+  value: GradeEnum | null;
+  onChange: (v: GradeEnum | null) => void;
   className?: string;
 };
 
 export function GradeFilter({ value, onChange, className }: GradeFilterProps) {
-  const handleToggle = (grade: Grade) => {
-    if (value.includes(grade)) {
-      onChange(value.filter(g => g !== grade));
-    } else {
-      onChange([...value, grade]);
-    }
+  const handleToggle = (grade: GradeEnum) => {
+    onChange(value === grade ? null : grade);
   };
 
   return (
     <div
-      role="group"
+      role="radiogroup"
       aria-label="학년 필터"
       className={`grid grid-cols-4 gap-[8px] ${className ?? ''}`}
     >
-      {GRADE_OPTIONS.map(g => {
-        const selected = value.includes(g);
+      {GRADE_VALUES.map(g => {
+        const selected = value === g;
         const stateClass = selected
           ? 'border-blue-500 text-blue-500 bg-white'
           : 'border-[#E6EBF3] text-[#8E8E8E] bg-white';
@@ -31,12 +34,12 @@ export function GradeFilter({ value, onChange, className }: GradeFilterProps) {
           <button
             key={g}
             type="button"
-            role="checkbox"
+            role="radio"
             aria-checked={selected}
             onClick={() => handleToggle(g)}
             className={`w-[72px] h-[44px] rounded-[10px] border text-[14px] font-medium transition-colors ${stateClass}`}
           >
-            {g}
+            {gradeLabel(g)}
           </button>
         );
       })}

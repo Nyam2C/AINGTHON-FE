@@ -17,7 +17,7 @@ const INITIAL_PROFILE: OnboardingProfile = {
   major: null,
   techStack: [],
   career: '',
-  school: '',
+  university: '',
   grade: null,
   projects: '',
   goals: '',

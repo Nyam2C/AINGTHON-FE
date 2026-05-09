@@ -1,22 +1,31 @@
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
+import { BottomNav } from '../components/common/BottomNav';
 import { CheckCircleIcon } from '../components/match/CheckCircleIcon';
 import { PrimaryButton } from '../components/onboarding/PrimaryButton';
 
 type CompleteState = {
-  matchRequestId?: string;
+  matchId?: number;
+  chatRoomId?: number;
   userName?: string;
 };
 
 export function MatchRequestCompleteScreen() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { userId } = useParams<{ userId: string }>();
   const state = (location.state ?? {}) as CompleteState;
   const userName = state.userName ?? '';
-  const matchRequestId = state.matchRequestId ?? '';
+  const chatRoomId = state.chatRoomId;
 
   const handleOpenChat = () => {
-    console.warn('chat route not implemented', { matchRequestId, userId });
+    if (chatRoomId == null) {
+      console.warn('chatRoomId missing; cannot open chat', { userId });
+      return;
+    }
+    navigate(`/chat/${chatRoomId}`, {
+      state: { userName, chatRoomId },
+    });
   };
   const handleViewMyRequests = () => {
     console.warn('match requests route not implemented');
@@ -24,7 +33,7 @@ export function MatchRequestCompleteScreen() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-black">
-      <div className="relative mx-auto w-[390px] min-h-[844px] bg-white flex flex-col items-center pt-[200px]">
+      <div className="relative mx-auto w-[390px] min-h-[844px] bg-white flex flex-col items-center pt-[200px] pb-[80px]">
         <CheckCircleIcon size={113} />
 
         <h1 className="mt-[20px] font-inter text-[24px] font-semibold text-black">
@@ -50,6 +59,7 @@ export function MatchRequestCompleteScreen() {
             내 신청 내역 보기
           </button>
         </div>
+        <BottomNav active="search" />
       </div>
     </div>
   );

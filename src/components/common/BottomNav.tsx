@@ -14,9 +14,9 @@ const TABS: ReadonlyArray<{
 }> = [
   { key: 'home', label: '홈', path: '/home' },
   { key: 'search', label: '검색', path: '/search' },
-  { key: 'matching', label: '매칭', path: null },
-  { key: 'chat', label: '채팅', path: null },
-  { key: 'profile', label: '마이', path: null },
+  { key: 'matching', label: '매칭', path: '/matches' },
+  { key: 'chat', label: '채팅', path: '/chat' },
+  { key: 'profile', label: '마이', path: '/my' },
 ];
 
 export function BottomNav({ active, className }: BottomNavProps) {

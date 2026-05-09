@@ -1,15 +1,15 @@
-import type { MatchPreference } from '../../types/match';
+import type { PreferredMode } from '../../types/match';
 
 type PreferenceRadioGroupProps = {
-  value: MatchPreference;
-  onChange: (v: MatchPreference) => void;
+  value: PreferredMode;
+  onChange: (v: PreferredMode) => void;
   className?: string;
 };
 
-const OPTIONS: ReadonlyArray<{ value: MatchPreference; label: string }> = [
-  { value: 'online', label: '온라인' },
-  { value: 'offline', label: '오프라인' },
-  { value: 'any', label: '상관없음' },
+const OPTIONS: ReadonlyArray<{ value: PreferredMode; label: string }> = [
+  { value: 'ONLINE', label: '온라인' },
+  { value: 'OFFLINE', label: '오프라인' },
+  { value: 'NO_PREFERENCE', label: '상관없음' },
 ];
 
 export function PreferenceRadioGroup({
