@@ -33,3 +33,4 @@ logs/
 
 # Harness workspace (intermediate artifacts)
 _workspace/
+scenario.md

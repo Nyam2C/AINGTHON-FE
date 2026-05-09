@@ -73,7 +73,7 @@
 
 ## 하네스: 프론트엔드 화면 개발
 
-**목표:** 화면 1장 + 사용자 시나리오를 입력으로 받아 plan → todo → TDD(test → implement) → review 파이프라인으로 React 화면을 자동 개발한다.
+**목표:** 화면 1장 + 사용자 시나리오를 입력으로 받아 plan → todo → implement → review 파이프라인으로 React 화면을 자동 개발한다.
 
 **트리거:** 화면 명세/이미지/시나리오와 함께 화면 개발을 요청할 때 `screen-dev` 스킬을 사용하라. 예: "로그인 화면 만들어줘", "{화면명} 페이지 추가", "이 시나리오대로 개발해줘". 후속 작업("review 다시", "todo만 수정")도 동일 스킬 사용. 단순 질문/단편 수정에는 사용하지 않는다.
 
@@ -83,3 +83,4 @@
 | 날짜 | 변경 내용 | 대상 | 사유 |
 |------|----------|------|------|
 | 2026-05-09 | 초기 구성 (planner / todo-author / test-author / implementer / reviewer + screen-dev 오케스트레이터) | 전체 | - |
+| 2026-05-10 | test-author 단계 제거, vitest/@testing-library/jsdom 의존성 제거. todo의 행동 명세는 reviewer 수동 체크리스트와 사용자 dev 검수 시나리오로 용도 변경. 4단계(plan → todo → implement → review)로 축소. | screen-dev SKILL.md, agents/test-author.md(삭제), agents/todo-author.md, agents/implementer.md, agents/reviewer.md, references/test-patterns.md(삭제), references/code-style.md, package.json, vite.config.ts, tsconfig.json | WSL2+Node 23+vitest 4 환경에서 worker spawn hang으로 자동 검증 불가. TDD 자동화의 비용 대비 효용 부재로 정적 검증(typecheck/lint) + 수동 시나리오로 전환. |
