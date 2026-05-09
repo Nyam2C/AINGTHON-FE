@@ -11,6 +11,7 @@ const PAGE_SIZE = 20;
 export function SearchResultsScreen() {
   const navigate = useNavigate();
   const keyword = useSearchFilterStore(s => s.keyword);
+  const role = useSearchFilterStore(s => s.role);
   const techStack = useSearchFilterStore(s => s.techStack);
   const sameUniversity = useSearchFilterStore(s => s.sameUniversity);
   const grade = useSearchFilterStore(s => s.grade);
@@ -19,7 +20,8 @@ export function SearchResultsScreen() {
 
   const { data, isLoading, isError } = useSearchProfilesQuery({
     keyword: keyword || undefined,
-    techStack: techStack || undefined,
+    role: role !== 'all' ? role : undefined,
+    techStack: techStack.length > 0 ? techStack.join(',') : undefined,
     sameUniversity: sameUniversity || undefined,
     grade: grade ?? undefined,
     page,
