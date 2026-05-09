@@ -23,17 +23,12 @@ export default {
           '0%, 80%, 100%': { transform: 'translateY(0)', opacity: '0.4' },
           '40%': { transform: 'translateY(-6px)', opacity: '1' },
         },
-        fadeInUpCenter: {
-          '0%': { opacity: '0', transform: 'translate(-50%, 16px)' },
-          '100%': { opacity: '1', transform: 'translate(-50%, 0)' },
-        },
       },
       animation: {
         'fade-in-up': 'fadeInUp 600ms ease-out both',
         'fade-in-delayed': 'fadeIn 400ms ease-out 600ms both',
         'fade-in-up-text-1': 'fadeInUp 400ms ease-out both',
         'fade-in-up-text-2': 'fadeInUp 400ms ease-out 200ms both',
-        'fade-in-up-center-2': 'fadeInUpCenter 400ms ease-out 200ms both',
         'fade-in': 'fadeIn 300ms ease-out both',
         'pulse-soft': 'pulseSoft 1500ms ease-in-out infinite',
         'bounce-dot-0': 'bounceDot 1200ms ease-in-out infinite',
