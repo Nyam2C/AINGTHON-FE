@@ -75,7 +75,7 @@ export const router = createBrowserRouter([
     element: <ChatListScreen />,
   },
   {
-    path: '/chat/:matchId',
+    path: '/chat/:roomId',
     element: <ChatRoomScreen />,
   },
   {
@@ -83,11 +83,11 @@ export const router = createBrowserRouter([
     element: <MatchesScreen />,
   },
   {
-    path: '/matches/:matchId/review',
+    path: '/schedules/:scheduleId/review',
     element: <ReviewScreen />,
   },
   {
-    path: '/matches/:matchId/report',
+    path: '/schedules/:scheduleId/report',
     element: <ReportScreen />,
   },
   {
