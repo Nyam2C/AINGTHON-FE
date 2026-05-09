@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { CodemateLogo } from '../components/landing/CodemateLogo';
 import { CodemateWordmark } from '../components/landing/CodemateWordmark';
-import { IPhoneHomeIndicator } from '../components/landing/IPhoneHomeIndicator';
-import { IPhoneStatusBar } from '../components/landing/IPhoneStatusBar';
 
 export function LandingScreen() {
   const navigate = useNavigate();
@@ -18,9 +16,8 @@ export function LandingScreen() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-black">
-      <div className="relative mx-auto flex h-[844px] w-[390px] flex-col bg-blue-500">
-        <IPhoneStatusBar className="text-white" />
-        <div className="flex flex-1 flex-col items-center justify-center gap-4">
+      <div className="relative mx-auto h-[844px] w-[390px] bg-blue-500">
+        <div className="absolute left-1/2 top-[280px] flex -translate-x-1/2 flex-col items-center gap-4">
           <CodemateLogo
             width={142}
             height={139}
@@ -28,7 +25,6 @@ export function LandingScreen() {
           />
           <CodemateWordmark className="text-white motion-safe:animate-fade-in-delayed motion-reduce:animate-none" />
         </div>
-        <IPhoneHomeIndicator className="text-black" />
       </div>
     </div>
   );
