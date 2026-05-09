@@ -17,7 +17,6 @@
 | 포매터 | oxformat |
 | Git 훅 | husky + lint-staged |
 | CI/CD | GitHub Actions |
-| 컨테이너 | Docker (CI 환경 통일) |
 | 테스트 | Jest + React Native Testing Library |
 | 환경변수 | react-native-config |
 
