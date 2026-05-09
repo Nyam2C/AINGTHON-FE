@@ -19,7 +19,12 @@ export function RoleBadge({ role }: RoleBadgeProps) {
     <span
       className={`inline-flex items-center gap-[6px] rounded-full px-[10px] py-[4px] text-[12px] font-medium ${colorClass}`}
     >
-      <span aria-hidden="true">M</span>
+      <img
+        src="/icon/matching.svg"
+        alt=""
+        aria-hidden="true"
+        className="h-[12px] w-[12px]"
+      />
       {labelText}
     </span>
   );

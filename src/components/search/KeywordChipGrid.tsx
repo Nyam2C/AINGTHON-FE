@@ -16,7 +16,7 @@ export function KeywordChipGrid({
           key={kw}
           type="button"
           onClick={() => onSelect(kw)}
-          className="min-w-[103px] h-[35px] bg-[#E6EBF3] rounded-full text-[16px] text-[#5C6470] font-medium"
+          className="min-w-[103px] h-[35px] bg-[#E6EBF3] rounded-full text-[16px] text-black font-bold"
         >
           {kw}
         </button>

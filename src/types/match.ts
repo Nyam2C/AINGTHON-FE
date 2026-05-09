@@ -19,10 +19,14 @@ export type Page<T> = {
   empty: boolean;
 };
 
+/** 검색 역할 필터 */
+export type RoleFilter = 'all' | 'mentor' | 'mentee';
+
 /** 검색 요청 파라미터 (백엔드 `/api/profiles` query) */
 export type SearchProfilesParams = {
   keyword?: string;
   techStack?: string;
+  role?: RoleFilter;
   sameUniversity?: boolean;
   grade?: GradeEnum;
   page?: number;

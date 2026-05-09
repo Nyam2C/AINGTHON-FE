@@ -93,7 +93,7 @@ export function CalendarPopover({
     <div
       role="dialog"
       aria-label="달력"
-      className="absolute z-10 mt-[8px] w-[320px] bg-white rounded-[12px] shadow-lg p-[16px]"
+      className="absolute z-10 bottom-full left-0 right-0 mb-[8px] w-full bg-white rounded-[12px] shadow-lg p-[16px] border border-[#E6EBF3]"
     >
       <div className="flex items-center justify-between mb-[12px]">
         <button type="button" onClick={handlePrev} aria-label="이전 달">

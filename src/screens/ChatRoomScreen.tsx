@@ -1,15 +1,21 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { ChatInputBar } from '../components/chat/ChatInputBar';
 import { ChatRoomHeader } from '../components/chat/ChatRoomHeader';
 import { MessageList } from '../components/chat/MessageList';
+import { SchedulePinnedCard } from '../components/chat/SchedulePinnedCard';
 import { BottomNav } from '../components/common/BottomNav';
 import { useChatMessagesQuery } from '../hooks/useChatMessagesQuery';
+import { usePastSchedulesQuery } from '../hooks/usePastSchedulesQuery';
+import { useReceivedMatchesQuery } from '../hooks/useReceivedMatchesQuery';
 import { useSendMessageMutation } from '../hooks/useSendMessageMutation';
+import { useSentMatchesQuery } from '../hooks/useSentMatchesQuery';
+import { useUpcomingSchedulesQuery } from '../hooks/useUpcomingSchedulesQuery';
 import { useUploadChatFileMutation } from '../hooks/useUploadChatFileMutation';
 import { useAuthStore } from '../store/useAuthStore';
 import type { Role } from '../types/onboarding';
+import { localTimeToString } from '../types/schedule';
 
 type LocationState = {
   userName?: string;
@@ -32,6 +38,32 @@ export function ChatRoomScreen() {
   const { data: messages } = useChatMessagesQuery(roomId);
   const sendMessage = useSendMessageMutation();
   const uploadFile = useUploadChatFileMutation();
+
+  const sentMatchesQuery = useSentMatchesQuery();
+  const receivedMatchesQuery = useReceivedMatchesQuery();
+  const upcomingSchedulesQuery = useUpcomingSchedulesQuery();
+  const pastSchedulesQuery = usePastSchedulesQuery();
+
+  const scheduleForRoom = useMemo(() => {
+    if (roomId == null) return null;
+    const allMatches = [
+      ...(sentMatchesQuery.data ?? []),
+      ...(receivedMatchesQuery.data ?? []),
+    ];
+    const match = allMatches.find(m => m.chatRoomId === roomId);
+    if (!match) return null;
+    const allSchedules = [
+      ...(upcomingSchedulesQuery.data ?? []),
+      ...(pastSchedulesQuery.data ?? []),
+    ];
+    return allSchedules.find(s => s.matchId === match.id) ?? null;
+  }, [
+    roomId,
+    sentMatchesQuery.data,
+    receivedMatchesQuery.data,
+    upcomingSchedulesQuery.data,
+    pastSchedulesQuery.data,
+  ]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -80,6 +112,15 @@ export function ChatRoomScreen() {
           responseHint="보통 10분 이내 응답"
           onBack={handleBack}
         />
+        {scheduleForRoom && (
+          <SchedulePinnedCard
+            scheduledDate={scheduleForRoom.scheduledDate}
+            scheduledTimeRange={localTimeToString(
+              scheduleForRoom.scheduledTime,
+            )}
+            location={scheduleForRoom.location}
+          />
+        )}
         <MessageList
           messages={messages ?? []}
           currentUserId={currentUserId}

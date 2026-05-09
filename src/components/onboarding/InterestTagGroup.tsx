@@ -41,7 +41,7 @@ export function InterestTagGroup({
             role="checkbox"
             aria-checked={selected}
             onClick={() => handleClick(option)}
-            className={`${stateClass} rounded-full px-[14px] py-[8px] text-[14px] transition-colors`}
+            className={`${stateClass} rounded-[12px] px-[14px] py-[8px] text-[14px] transition-colors`}
           >
             {option}
           </button>

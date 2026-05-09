@@ -58,7 +58,7 @@ export function OnboardingRoleScreen() {
         </div>
         <PaginationDots
           currentIndex={1}
-          className="absolute bottom-[50px] left-1/2 -translate-x-1/2"
+          className="absolute bottom-[100px] left-1/2 -translate-x-1/2"
         />
       </div>
     </div>

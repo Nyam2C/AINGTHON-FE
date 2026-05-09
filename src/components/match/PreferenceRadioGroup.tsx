@@ -21,7 +21,7 @@ export function PreferenceRadioGroup({
     <div
       role="radiogroup"
       aria-label="선호 방식"
-      className={`flex flex-col gap-[12px] ${className ?? ''}`}
+      className={`flex flex-row gap-[20px] ${className ?? ''}`}
     >
       {OPTIONS.map(opt => {
         const selected = value === opt.value;
