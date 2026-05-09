@@ -12,7 +12,7 @@ export function PaginationDots({
   return (
     <div
       role="tablist"
-      className={`flex items-center justify-center gap-[8px] ${className ?? ''}`}
+      className={`flex items-center justify-center gap-[13px] ${className ?? ''}`}
     >
       {Array.from({ length: total }).map((_, index) => {
         const isActive = index === currentIndex;
