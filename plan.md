@@ -2,22 +2,22 @@
 
 ## 기술 스택
 
-| 분류 | 기술 |
-|------|------|
-| 프레임워크 | React + Vite |
-| 언어 | TypeScript |
-| 백엔드 | Spring (별도) |
-| 상태관리 | Zustand |
-| 스타일링 | Tailwind CSS |
-| 라우팅 | react-router-dom |
-| API 통신 | Axios + TanStack Query |
-| 패키지 매니저 | pnpm |
-| 린터 | oxlint |
-| 포매터 | Prettier |
-| Git 훅 | husky + lint-staged |
-| CI/CD | GitHub Actions |
-| 테스트 | Vitest |
-| 환경변수 | Vite (import.meta.env) |
+| 분류          | 기술                   |
+| ------------- | ---------------------- |
+| 프레임워크    | React + Vite           |
+| 언어          | TypeScript             |
+| 백엔드        | Spring (별도)          |
+| 상태관리      | Zustand                |
+| 스타일링      | Tailwind CSS           |
+| 라우팅        | react-router-dom       |
+| API 통신      | Axios + TanStack Query |
+| 패키지 매니저 | pnpm                   |
+| 린터          | oxlint                 |
+| 포매터        | Prettier               |
+| Git 훅        | husky + lint-staged    |
+| CI/CD         | GitHub Actions         |
+| 테스트        | Vitest                 |
+| 환경변수      | Vite (import.meta.env) |
 
 ## 폴더 구조
 
