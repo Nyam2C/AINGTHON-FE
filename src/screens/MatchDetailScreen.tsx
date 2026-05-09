@@ -97,9 +97,7 @@ export function MatchDetailScreen() {
 
             <div className="mt-[24px] px-[34px] flex flex-col gap-[16px]">
               {user.link && (
-                <DetailBox label="소개 링크" trailing={<LinkIcon />}>
-                  {user.link}
-                </DetailBox>
+                <LinkBox label="소개 링크" url={user.link} />
               )}
               {user.goal && <DetailBox label="목표">{user.goal}</DetailBox>}
               {user.techStacks.length > 0 && (
@@ -119,16 +117,14 @@ export function MatchDetailScreen() {
                   </div>
                 </div>
               )}
-              {user.projectExperiences.length > 0 && (
-                <DetailBox label="프로젝트" multiline>
-                  {user.projectExperiences.join('\n')}
-                </DetailBox>
-              )}
-              {user.careers.length > 0 && (
-                <DetailBox label="경력" multiline>
-                  {user.careers.join('\n')}
-                </DetailBox>
-              )}
+              <DetailBox label="프로젝트" multiline>
+                {user.projectExperiences.length > 0
+                  ? user.projectExperiences.join('\n')
+                  : '—'}
+              </DetailBox>
+              <DetailBox label="경력" multiline>
+                {user.careers.length > 0 ? user.careers.join('\n') : '—'}
+              </DetailBox>
             </div>
 
             <div className="mt-[28px] px-[34px] flex gap-[12px]">
@@ -163,12 +159,10 @@ export function MatchDetailScreen() {
 
 function DetailBox({
   label,
-  trailing,
   multiline = false,
   children,
 }: {
   label: string;
-  trailing?: React.ReactNode;
   multiline?: boolean;
   children: string;
 }) {
@@ -187,15 +181,39 @@ function DetailBox({
             {children}
           </p>
         )}
-        {trailing && (
-          <span
-            aria-hidden="true"
-            className="absolute right-[12px] top-1/2 -translate-y-1/2 text-[#8E8E8E]"
-          >
-            {trailing}
-          </span>
-        )}
       </div>
+    </div>
+  );
+}
+
+function ensureUrl(url: string): string {
+  if (/^https?:\/\//i.test(url)) return url;
+  if (/^[\w.+-]+@[\w.-]+\.[a-z]{2,}$/i.test(url)) return `mailto:${url}`;
+  return `https://${url}`;
+}
+
+function LinkBox({ label, url }: { label: string; url: string }) {
+  return (
+    <div>
+      <span className="block font-bold text-[16px] text-black mb-[8px]">
+        {label}
+      </span>
+      <a
+        href={ensureUrl(url)}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="relative block bg-white border border-[#94A3B8] rounded-[8px] px-[14px] py-[12px] hover:border-blue-500 transition-colors"
+      >
+        <span className="text-[14px] text-black truncate pr-[24px] block">
+          {url}
+        </span>
+        <span
+          aria-hidden="true"
+          className="absolute right-[12px] top-1/2 -translate-y-1/2 text-[#8E8E8E]"
+        >
+          <LinkIcon />
+        </span>
+      </a>
     </div>
   );
 }

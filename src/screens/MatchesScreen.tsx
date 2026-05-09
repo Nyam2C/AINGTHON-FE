@@ -33,10 +33,6 @@ export function MatchesScreen() {
   const pastQuery = usePastSchedulesQuery();
   const schedules = tab === 'upcoming' ? upcomingQuery.data : pastQuery.data;
 
-  const handleClickCard = (matchId: number) => {
-    if (tab === 'upcoming') navigate(`/match/${matchId}`);
-  };
-
   const handleReview = (scheduleId: number) => {
     navigate(`/schedules/${scheduleId}/review`);
   };
@@ -64,7 +60,6 @@ export function MatchesScreen() {
               <MeetingCard
                 key={m.scheduleId}
                 meeting={m}
-                onClick={tab === 'upcoming' ? handleClickCard : undefined}
                 onReview={handleReview}
               />
             ))

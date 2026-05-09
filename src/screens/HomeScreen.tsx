@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
 import { BottomNav } from '../components/common/BottomNav';
-import { CodemateLogo } from '../components/landing/CodemateLogo';
 import { CodemateWordmark } from '../components/landing/CodemateWordmark';
 import { useMyProfileQuery } from '../hooks/useMyProfileQuery';
 
@@ -15,7 +14,12 @@ export function HomeScreen() {
       <div className="relative mx-auto w-[390px] min-h-[844px] bg-white pb-[80px]">
         <header className="px-[24px] pt-[20px] flex items-center justify-between">
           <div className="flex items-center gap-[6px]">
-            <CodemateLogo width={28} height={28} className="text-blue-500" />
+            <img
+              src="/logo.svg"
+              alt=""
+              aria-hidden="true"
+              className="h-[28px] w-[28px]"
+            />
             <CodemateWordmark className="!text-[20px] !leading-[24px]" />
           </div>
           <button

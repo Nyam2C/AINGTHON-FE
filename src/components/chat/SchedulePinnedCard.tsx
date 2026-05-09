@@ -39,7 +39,7 @@ export function SchedulePinnedCard({
   };
 
   return (
-    <div className="mx-[34px] mt-[12px] rounded-[16px] border border-blue-500 bg-white p-[20px]">
+    <div className="mx-auto mt-[12px] w-[276px] min-h-[292px] rounded-[9px] border border-blue-500 bg-white p-[20px]">
       <h2 className="font-inter text-[20px] font-bold leading-[28px] text-black">
         {title}
         <br />
