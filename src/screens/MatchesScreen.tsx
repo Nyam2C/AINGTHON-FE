@@ -2,51 +2,53 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { BottomNav } from '../components/common/BottomNav';
-import { EndMatchConfirmModal } from '../components/matches/EndMatchConfirmModal';
 import { MeetingCard } from '../components/matches/MeetingCard';
 import { ScheduleSegmentTabs } from '../components/matches/ScheduleSegmentTabs';
-import { useEndMatchMutation } from '../hooks/useEndMatchMutation';
-import { useMatchesQuery } from '../hooks/useMatchesQuery';
+import { usePastSchedulesQuery } from '../hooks/usePastSchedulesQuery';
+import { useUpcomingSchedulesQuery } from '../hooks/useUpcomingSchedulesQuery';
+import { localTimeToString } from '../types/schedule';
+import type { ScheduleResponse } from '../types/schedule';
 import type { Meeting, MeetingStatus } from '../types/meeting';
+
+function toMeeting(
+  schedule: ScheduleResponse,
+  status: MeetingStatus,
+): Meeting {
+  return {
+    scheduleId: schedule.id,
+    matchId: schedule.matchId,
+    partnerUserId: schedule.receiverId,
+    partnerName: '상대방',
+    partnerRole: 'mentor',
+    title: '미팅',
+    date: schedule.scheduledDate,
+    time: localTimeToString(schedule.scheduledTime),
+    location: schedule.location,
+    status,
+  };
+}
 
 export function MatchesScreen() {
   const navigate = useNavigate();
   const [tab, setTab] = useState<MeetingStatus>('upcoming');
-  const [endTarget, setEndTarget] = useState<Meeting | null>(null);
 
-  const { data: meetings } = useMatchesQuery(tab);
-  const endMatch = useEndMatchMutation();
+  const upcomingQuery = useUpcomingSchedulesQuery();
+  const pastQuery = usePastSchedulesQuery();
+  const schedules = tab === 'upcoming' ? upcomingQuery.data : pastQuery.data;
 
-  const handleClickCard = (matchId: string) => {
-    if (tab === 'upcoming') navigate(`/chat/${matchId}`);
+  const handleClickCard = (matchId: number) => {
+    if (tab === 'upcoming') navigate(`/match/${matchId}`);
   };
 
-  const handleEndMatch = (matchId: string) => {
-    const target = meetings?.find(m => m.matchId === matchId);
-    if (target) setEndTarget(target);
-  };
-
-  const handleConfirmEnd = () => {
-    if (!endTarget) return;
-    const id = endTarget.matchId;
-    endMatch.mutate(id, {
-      onSuccess: () => {
-        setEndTarget(null);
-        navigate(`/matches/${id}/review`);
-      },
-      onError: err => console.error(err),
-    });
-  };
-
-  const handleReview = (matchId: string) => {
-    navigate(`/matches/${matchId}/review`);
+  const handleReview = (scheduleId: number) => {
+    navigate(`/schedules/${scheduleId}/review`);
   };
 
   const handleAddSchedule = () => {
     console.warn('add schedule route not implemented');
   };
 
-  const list = meetings ?? [];
+  const list = (schedules ?? []).map(s => toMeeting(s, tab));
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-black">
@@ -67,10 +69,9 @@ export function MatchesScreen() {
           ) : (
             list.map(m => (
               <MeetingCard
-                key={m.matchId}
+                key={m.scheduleId}
                 meeting={m}
                 onClick={tab === 'upcoming' ? handleClickCard : undefined}
-                onEnd={handleEndMatch}
                 onReview={handleReview}
               />
             ))
@@ -92,12 +93,6 @@ export function MatchesScreen() {
           )}
         </div>
         <BottomNav active="matching" />
-        <EndMatchConfirmModal
-          open={endTarget !== null}
-          onCancel={() => setEndTarget(null)}
-          onConfirm={handleConfirmEnd}
-          isPending={endMatch.isPending}
-        />
       </div>
     </div>
   );

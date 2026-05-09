@@ -9,39 +9,39 @@ import { LabeledTextarea } from '../components/onboarding/LabeledTextarea';
 import { PrimaryButton } from '../components/onboarding/PrimaryButton';
 import { useMatchUserQuery } from '../hooks/useMatchUserQuery';
 import { useRequestMatchMutation } from '../hooks/useRequestMatchMutation';
-import type { MatchPreference } from '../types/match';
+import type { PreferredMode } from '../types/match';
 
 export function MatchRequestScreen() {
   const navigate = useNavigate();
   const { userId } = useParams<{ userId: string }>();
-  const { data: user, isLoading } = useMatchUserQuery(userId ?? '');
+  const profileId = userId ? Number(userId) : null;
+  const { data: user, isLoading } = useMatchUserQuery(profileId);
   const mutation = useRequestMatchMutation();
 
   const [reason, setReason] = useState('');
-  const [requirement, setRequirement] = useState('');
-  const [preference, setPreference] = useState<MatchPreference>('any');
+  const [requirements, setRequirements] = useState('');
+  const [preferredMode, setPreferredMode] =
+    useState<PreferredMode>('NO_PREFERENCE');
   const [preferredDate, setPreferredDate] = useState<string | null>(null);
 
   const handleBack = () => navigate(-1);
 
   const handleSubmit = () => {
-    if (!userId) return;
-    // 검증 임시 해제: 빈 값도 허용. 추후 복원 시 다음 조건 추가.
-    //   - if (reason.trim().length === 0) return;
-    //   - if (reason.length > 300) return;
+    if (profileId == null || !Number.isFinite(profileId)) return;
     mutation.mutate(
       {
-        targetUserId: userId,
+        receiverId: profileId,
         reason,
-        requirement,
-        preference,
-        preferredDate,
+        requirements: requirements.trim() ? requirements : undefined,
+        preferredMode,
+        preferredDate: preferredDate ?? undefined,
       },
       {
         onSuccess: data => {
-          navigate(`/match/${userId}/request/complete`, {
+          navigate(`/match/${profileId}/request/complete`, {
             state: {
-              matchRequestId: data.matchRequestId,
+              matchId: data.id,
+              chatRoomId: data.chatRoomId,
               userName: user?.name ?? '',
             },
           });
@@ -90,14 +90,17 @@ export function MatchRequestScreen() {
           />
           <LabeledTextInput
             label="요구사항 (선택)"
-            value={requirement}
-            onChange={setRequirement}
+            value={requirements}
+            onChange={setRequirements}
           />
           <div>
             <span className="block font-bold text-[16px] text-black mb-[8px]">
               선호 방식
             </span>
-            <PreferenceRadioGroup value={preference} onChange={setPreference} />
+            <PreferenceRadioGroup
+              value={preferredMode}
+              onChange={setPreferredMode}
+            />
           </div>
           <div>
             <span className="block font-bold text-[16px] text-black mb-[8px]">

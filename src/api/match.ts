@@ -1,109 +1,96 @@
 import { apiClient } from './client';
-import {
-  getMockMatchUser,
-  getMockRecommendedUsers,
-  getMockSearchUsers,
-} from './match.mock';
 import type {
-  BookmarkPayload,
-  BookmarkResponse,
   MatchRequestPayload,
-  MatchRequestResponse,
-  MatchUser,
-  MatchUserSummary,
-  SearchCountResponse,
-  SearchUsersParams,
-  SearchUsersResponse,
+  MatchResponse,
+  SearchProfilesParams,
+  SearchProfilesResponse,
 } from '../types/match';
+import type { ProfileResponse } from '../types/profile';
+import type { ScheduleRequest, ScheduleResponse } from '../types/schedule';
 
-// 백엔드 미가동 환경에서도 플로우 검증이 가능하도록 read 호출 실패 시 mock으로 폴백.
-// 백엔드 연동 후에는 각 함수의 try/catch와 fallback 분기를 제거한다.
-function warnFallback(label: string, error: unknown) {
-  console.warn(`${label} fallback to mocks (backend unavailable)`, error);
-}
-
-export async function getRecommendedUsers(): Promise<MatchUserSummary[]> {
-  try {
-    const { data } = await apiClient.get<MatchUserSummary[]>(
-      '/match/recommendations',
-    );
-    return data;
-  } catch (error) {
-    warnFallback('getRecommendedUsers', error);
-    return getMockRecommendedUsers();
-  }
-}
-
-export async function searchUsers(
-  params: SearchUsersParams,
-): Promise<SearchUsersResponse> {
-  try {
-    const { data } = await apiClient.get<SearchUsersResponse>('/match/search', {
-      params,
-    });
-    return data;
-  } catch (error) {
-    warnFallback('searchUsers', error);
-    return getMockSearchUsers(params);
-  }
-}
-
-export async function searchUsersCount(
-  params: SearchUsersParams,
-): Promise<SearchCountResponse> {
-  try {
-    const { data } = await apiClient.get<SearchCountResponse>(
-      '/match/search/count',
-      { params },
-    );
-    return data;
-  } catch (error) {
-    warnFallback('searchUsersCount', error);
-    return { total: getMockSearchUsers(params).total };
-  }
-}
-
-export async function getMatchUser(userId: string): Promise<MatchUser> {
-  try {
-    const { data } = await apiClient.get<MatchUser>(
-      `/match/users/${encodeURIComponent(userId)}`,
-    );
-    return data;
-  } catch (error) {
-    warnFallback('getMatchUser', error);
-    return getMockMatchUser(userId);
-  }
+/** 프로필 검색 (§6 search-domain). 본 도메인은 인터페이스 정합만 유지 */
+export async function searchProfiles(
+  params: SearchProfilesParams,
+): Promise<SearchProfilesResponse> {
+  const { data } = await apiClient.get<SearchProfilesResponse>(
+    '/api/profiles',
+    { params },
+  );
+  return data;
 }
 
 export async function requestMatch(
   payload: MatchRequestPayload,
-): Promise<MatchRequestResponse> {
-  try {
-    const { data } = await apiClient.post<MatchRequestResponse>(
-      '/match/request',
-      payload,
-    );
-    return data;
-  } catch (error) {
-    warnFallback('requestMatch', error);
-    return {
-      matchRequestId: `mock-${Date.now()}`,
-      chatRoomId: `mock-chat-${payload.targetUserId}`,
-    };
-  }
+): Promise<MatchResponse> {
+  const { data } = await apiClient.post<MatchResponse>('/api/matches', payload);
+  return data;
 }
 
-export async function toggleBookmark(
-  payload: BookmarkPayload,
-): Promise<BookmarkResponse> {
-  try {
-    const { data } = await apiClient.post<BookmarkResponse>(
-      '/match/bookmark',
-      payload,
-    );
-    return data;
-  } catch (error) {
-    warnFallback('toggleBookmark', error);
-    return { userId: payload.userId, bookmarked: payload.bookmark };
-  }
+/** 프로필 단건 조회 — `MatchDetailScreen`이 이 함수로 ProfileResponse를 받음 */
+export async function getMatchUser(profileId: number): Promise<ProfileResponse> {
+  const { data } = await apiClient.get<ProfileResponse>(
+    `/api/profiles/${profileId}`,
+  );
+  return data;
+}
+
+export async function approveMatch(matchId: number): Promise<MatchResponse> {
+  const { data } = await apiClient.patch<MatchResponse>(
+    `/api/matches/${matchId}/approve`,
+  );
+  return data;
+}
+
+export async function rejectMatch(matchId: number): Promise<MatchResponse> {
+  const { data } = await apiClient.patch<MatchResponse>(
+    `/api/matches/${matchId}/reject`,
+  );
+  return data;
+}
+
+export async function getSentMatches(): Promise<MatchResponse[]> {
+  const { data } = await apiClient.get<MatchResponse[]>('/api/matches/sent');
+  return data;
+}
+
+export async function getReceivedMatches(): Promise<MatchResponse[]> {
+  const { data } =
+    await apiClient.get<MatchResponse[]>('/api/matches/received');
+  return data;
+}
+
+export async function proposeSchedule(
+  matchId: number,
+  body: ScheduleRequest,
+): Promise<ScheduleResponse> {
+  const { data } = await apiClient.post<ScheduleResponse>(
+    `/api/matches/${matchId}/schedule`,
+    body,
+  );
+  return data;
+}
+
+export async function updateSchedule(
+  matchId: number,
+  body: ScheduleRequest,
+): Promise<ScheduleResponse> {
+  const { data } = await apiClient.put<ScheduleResponse>(
+    `/api/matches/${matchId}/schedule`,
+    body,
+  );
+  return data;
+}
+
+export async function getUpcomingSchedules(): Promise<ScheduleResponse[]> {
+  const { data } = await apiClient.get<ScheduleResponse[]>(
+    '/api/matches/schedules/upcoming',
+  );
+  return data;
+}
+
+export async function getPastSchedules(): Promise<ScheduleResponse[]> {
+  const { data } = await apiClient.get<ScheduleResponse[]>(
+    '/api/matches/schedules/past',
+  );
+  return data;
 }

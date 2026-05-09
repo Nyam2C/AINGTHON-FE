@@ -1,10 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
 
 import { requestMatch } from '../api/match';
-import type { MatchRequestPayload, MatchRequestResponse } from '../types/match';
+import type { MatchRequestPayload, MatchResponse } from '../types/match';
 
 export function useRequestMatchMutation() {
-  return useMutation<MatchRequestResponse, Error, MatchRequestPayload>({
+  return useMutation<MatchResponse, Error, MatchRequestPayload>({
     mutationFn: requestMatch,
   });
 }

@@ -3,37 +3,19 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { BottomNav } from '../components/common/BottomNav';
 import { LoadingAnimation } from '../components/common/LoadingAnimation';
 import { CodemateLogo } from '../components/landing/CodemateLogo';
-import { BookmarkButton } from '../components/match/BookmarkButton';
-import { InterestTagRow } from '../components/match/InterestTagRow';
 import { ProfileField } from '../components/match/ProfileField';
 import { RatingDisplay } from '../components/match/RatingDisplay';
-import { useBookmarkMutation } from '../hooks/useBookmarkMutation';
 import { useMatchUserQuery } from '../hooks/useMatchUserQuery';
-import type { Role } from '../types/onboarding';
-
-const ROLE_BADGE_LABEL: Record<Role, string> = {
-  mentor: '멘토',
-  mentee: '멘티',
-  both: '멘토·멘티',
-};
 
 export function MatchDetailScreen() {
   const navigate = useNavigate();
   const { userId } = useParams<{ userId: string }>();
-  const { data: user, isLoading, isError } = useMatchUserQuery(userId ?? '');
-  const bookmarkMutation = useBookmarkMutation();
+  const profileId = userId ? Number(userId) : null;
+  const { data: user, isLoading, isError } = useMatchUserQuery(profileId);
 
   const handleRequest = () => {
-    if (!userId) return;
-    navigate(`/match/${userId}/request`);
-  };
-
-  const handleBookmarkToggle = () => {
-    if (!user) return;
-    bookmarkMutation.mutate(
-      { userId: user.userId, bookmark: !user.bookmarked },
-      { onError: err => console.error('toggleBookmark failed', err) },
-    );
+    if (profileId == null) return;
+    navigate(`/match/${profileId}/request`);
   };
 
   return (
@@ -59,7 +41,7 @@ export function MatchDetailScreen() {
                   className="text-blue-500"
                 />
                 <span className="text-[14px] text-blue-500 font-medium">
-                  {ROLE_BADGE_LABEL[user.role]}
+                  {user.major ? '전공자' : '비전공자'}
                 </span>
               </div>
 
@@ -70,54 +52,68 @@ export function MatchDetailScreen() {
               <h1 className="mt-[16px] font-inter text-[24px] font-medium text-black">
                 {user.name}
               </h1>
-              <p className="mt-[4px] text-[14px] text-[#8E8E8E]">
-                {user.jobTitle}
-              </p>
+              {user.university && (
+                <p className="mt-[4px] text-[14px] text-[#8E8E8E]">
+                  {user.university}
+                </p>
+              )}
               <RatingDisplay
-                rating={user.rating}
-                count={user.ratingCount}
+                rating={user.averageRating}
+                count={user.reviewCount}
                 withArrow
                 className="mt-[8px]"
               />
-
-              <InterestTagRow tags={user.interests} className="mt-[16px]" />
             </div>
 
             <div className="mt-[24px] px-[34px] flex flex-col gap-[20px]">
-              <ProfileField
-                label="소개 링크"
-                value={user.introLink}
-                trailingIcon={<span>🔗</span>}
-              />
-              <ProfileField label="목표" value={user.goal} multiline />
-              <div>
-                <span className="block font-bold text-[16px] text-black mb-[8px]">
-                  기술 스택
-                </span>
-                <div className="flex flex-wrap gap-[8px]">
-                  {user.techStack.map(t => (
-                    <span
-                      key={t}
-                      className="px-[14px] py-[8px] bg-[#D8E6FF] text-blue-600 rounded-full text-[14px]"
-                    >
-                      {t}
-                    </span>
-                  ))}
+              {user.link && (
+                <ProfileField
+                  label="소개 링크"
+                  value={user.link}
+                  trailingIcon={<span>🔗</span>}
+                />
+              )}
+              {user.goal && (
+                <ProfileField label="목표" value={user.goal} multiline />
+              )}
+              {user.techStacks.length > 0 && (
+                <div>
+                  <span className="block font-bold text-[16px] text-black mb-[8px]">
+                    기술 스택
+                  </span>
+                  <div className="flex flex-wrap gap-[8px]">
+                    {user.techStacks.map(t => (
+                      <span
+                        key={t}
+                        className="px-[14px] py-[8px] bg-[#D8E6FF] text-blue-600 rounded-full text-[14px]"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
-              <ProfileField label="프로젝트" value={user.projects} multiline />
-              <ProfileField label="경력" value={user.career} multiline />
+              )}
+              {user.projectExperiences.length > 0 && (
+                <ProfileField
+                  label="프로젝트"
+                  value={user.projectExperiences.join('\n')}
+                  multiline
+                />
+              )}
+              {user.careers.length > 0 && (
+                <ProfileField
+                  label="경력"
+                  value={user.careers.join('\n')}
+                  multiline
+                />
+              )}
             </div>
 
-            <div className="mt-[32px] px-[34px] flex gap-[12px]">
-              <BookmarkButton
-                bookmarked={user.bookmarked}
-                onToggle={handleBookmarkToggle}
-              />
+            <div className="mt-[32px] px-[34px] flex justify-center">
               <button
                 type="button"
                 onClick={handleRequest}
-                className="w-[145px] h-[52px] rounded-[9px] bg-blue-500 font-inter text-[16px] font-medium leading-[21px] tracking-[-0.01em] text-white transition-colors"
+                className="w-[280px] h-[52px] rounded-[9px] bg-blue-500 font-inter text-[16px] font-medium leading-[21px] tracking-[-0.01em] text-white transition-colors"
               >
                 매칭 신청
               </button>

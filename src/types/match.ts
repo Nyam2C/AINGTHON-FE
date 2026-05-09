@@ -1,67 +1,64 @@
-import type { Grade, Role } from './onboarding';
+import type { GradeEnum, ProfileResponse } from './profile';
 
-/** 검색 필터 역할 (전체 포함) */
-export type RoleFilter = 'all' | 'mentor' | 'mentee';
+/** 매칭 상태 */
+export type MatchStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
 
 /** 매칭 신청 시 선호 방식 */
-export type MatchPreference = 'online' | 'offline' | 'any';
+export type PreferredMode = 'ONLINE' | 'OFFLINE' | 'NO_PREFERENCE';
 
-/** 후보 목록(섹션 7) / 추천(섹션 5) 요약 정보 */
-export type MatchUserSummary = {
-  userId: string;
-  name: string;
-  role: Role;
-  jobTitle: string;
-  rating: number;
-  ratingCount: number;
-  bookmarked: boolean;
-  avatarUrl?: string;
+/** Spring Page 응답 */
+export type Page<T> = {
+  totalPages: number;
+  totalElements: number;
+  first: boolean;
+  last: boolean;
+  size: number;
+  content: T[];
+  number: number;
+  numberOfElements: number;
+  empty: boolean;
 };
 
-/** 상대 상세(섹션 8) 응답 */
-export type MatchUser = MatchUserSummary & {
-  introLink: string;
-  goal: string;
-  techStack: string[];
-  projects: string;
-  career: string;
-  interests: string[];
-};
-
-/** 검색 요청 파라미터 */
-export type SearchUsersParams = {
+/** 검색 요청 파라미터 (백엔드 `/api/profiles` query) */
+export type SearchProfilesParams = {
   keyword?: string;
-  role?: RoleFilter;
-  techStack?: string[];
-  grades?: Grade[];
+  techStack?: string;
+  sameUniversity?: boolean;
+  grade?: GradeEnum;
+  page?: number;
+  size?: number;
+  sort?: string[];
 };
+
+/** 검색 결과 응답 */
+export type SearchProfilesResponse = Page<ProfileResponse>;
+
+/** 호환을 위한 alias (점진 제거 — 화면은 ProfileResponse 직접 사용 권장) */
+export type MatchUserSummary = ProfileResponse;
+export type MatchUser = ProfileResponse;
 
 /** 매칭 신청 폼 입력값 (서버 payload) */
 export type MatchRequestPayload = {
-  targetUserId: string;
+  receiverId: number;
   reason: string;
-  requirement: string;
-  preference: MatchPreference;
-  preferredDate: string | null;
+  requirements?: string;
+  preferredMode: PreferredMode;
+  preferredDate?: string; // YYYY-MM-DD
 };
 
-/** 매칭 신청 응답 */
-export type MatchRequestResponse = {
-  matchRequestId: string;
-  chatRoomId?: string;
+/** 매칭 응답 */
+export type MatchResponse = {
+  id: number;
+  applicantId: number;
+  receiverId: number;
+  reason: string;
+  requirements?: string;
+  preferredMode: PreferredMode;
+  preferredDate?: string;
+  status: MatchStatus;
+  chatRoomId: number;
+  createdAt: string;
 };
-
-/** 북마크 토글 */
-export type BookmarkPayload = { userId: string; bookmark: boolean };
-export type BookmarkResponse = { userId: string; bookmarked: boolean };
-
-/** 검색 결과 응답 */
-export type SearchUsersResponse = {
-  total: number;
-  users: MatchUserSummary[];
-};
-
-export type SearchCountResponse = { total: number };
 
 /** 추천 키워드 — 검색 화면 정적 상수 */
 export const SEARCH_RECOMMENDED_KEYWORDS: readonly string[] = [

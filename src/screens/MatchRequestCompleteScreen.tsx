@@ -5,7 +5,8 @@ import { CheckCircleIcon } from '../components/match/CheckCircleIcon';
 import { PrimaryButton } from '../components/onboarding/PrimaryButton';
 
 type CompleteState = {
-  matchRequestId?: string;
+  matchId?: number;
+  chatRoomId?: number;
   userName?: string;
 };
 
@@ -15,15 +16,15 @@ export function MatchRequestCompleteScreen() {
   const { userId } = useParams<{ userId: string }>();
   const state = (location.state ?? {}) as CompleteState;
   const userName = state.userName ?? '';
-  const matchRequestId = state.matchRequestId ?? '';
+  const chatRoomId = state.chatRoomId;
 
   const handleOpenChat = () => {
-    if (!matchRequestId) {
-      console.warn('matchRequestId missing; cannot open chat', { userId });
+    if (chatRoomId == null) {
+      console.warn('chatRoomId missing; cannot open chat', { userId });
       return;
     }
-    navigate(`/chat/${matchRequestId}`, {
-      state: { userName, chatRoomId: matchRequestId },
+    navigate(`/chat/${chatRoomId}`, {
+      state: { userName, chatRoomId },
     });
   };
   const handleViewMyRequests = () => {

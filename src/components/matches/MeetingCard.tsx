@@ -8,9 +8,8 @@ import type { Role } from '../../types/onboarding';
 
 type MeetingCardProps = {
   meeting: Meeting;
-  onEnd?: (matchId: string) => void;
-  onReview?: (matchId: string) => void;
-  onClick?: (matchId: string) => void;
+  onReview?: (scheduleId: number) => void;
+  onClick?: (matchId: number) => void;
   className?: string;
 };
 
@@ -34,23 +33,17 @@ function computeDDay(date: string): string {
 
 export function MeetingCard({
   meeting,
-  onEnd,
   onReview,
   onClick,
   className,
 }: MeetingCardProps) {
   const dDay = meeting.status === 'upcoming' ? computeDDay(meeting.date) : '';
 
-  const showEnd = meeting.status === 'past' && !meeting.ended;
-  const showReview =
-    meeting.status === 'past' && meeting.ended === true && !meeting.reviewed;
+  const showReview = meeting.status === 'past' && !meeting.reviewed;
 
-  const stopAnd = (
-    e: MouseEvent<HTMLButtonElement>,
-    fn?: (matchId: string) => void,
-  ) => {
+  const handleReviewClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    fn?.(meeting.matchId);
+    onReview?.(meeting.scheduleId);
   };
 
   return (
@@ -91,19 +84,10 @@ export function MeetingCard({
         <span>{meeting.location}</span>
       </div>
       <div className="absolute right-[16px] bottom-[16px]">
-        {showEnd && (
-          <button
-            type="button"
-            onClick={e => stopAnd(e, onEnd)}
-            className="h-[34px] px-[12px] rounded-[9px] border border-blue-500 text-blue-500 text-[13px]"
-          >
-            미팅 종료
-          </button>
-        )}
         {showReview && (
           <button
             type="button"
-            onClick={e => stopAnd(e, onReview)}
+            onClick={handleReviewClick}
             className="h-[34px] px-[12px] rounded-[9px] bg-blue-500 text-white text-[13px]"
           >
             리뷰 작성
