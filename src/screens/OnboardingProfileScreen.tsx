@@ -102,8 +102,8 @@ export function OnboardingProfileScreen() {
           />
           <LabeledTextInput
             label="학교명"
-            value={profile.school}
-            onChange={v => patchProfile({ school: v })}
+            value={profile.university}
+            onChange={v => patchProfile({ university: v })}
           />
           <div>
             <span className="block font-bold text-[16px] text-black mb-[8px]">
