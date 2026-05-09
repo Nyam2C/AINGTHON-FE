@@ -14,10 +14,10 @@ import { INTEREST_OPTIONS } from '../types/onboarding';
 
 export function OnboardingProfileScreen() {
   const navigate = useNavigate();
-  const role = useOnboardingStore((s) => s.role);
-  const profile = useOnboardingStore((s) => s.profile);
-  const patchProfile = useOnboardingStore((s) => s.patchProfile);
-  const reset = useOnboardingStore((s) => s.reset);
+  const role = useOnboardingStore(s => s.role);
+  const profile = useOnboardingStore(s => s.profile);
+  const patchProfile = useOnboardingStore(s => s.patchProfile);
+  const reset = useOnboardingStore(s => s.reset);
   const mutation = useCompleteOnboardingMutation();
 
   const isValid =
@@ -39,7 +39,7 @@ export function OnboardingProfileScreen() {
           reset();
           navigate('/onboarding/loading?next=/home&duration=1000');
         },
-        onError: (error) => {
+        onError: error => {
           // TODO(stub): 추후 toast/alert로 교체.
           console.error('completeOnboarding failed', error);
         },
@@ -59,7 +59,7 @@ export function OnboardingProfileScreen() {
           간단히 작성해 주세요.
         </p>
         <form
-          onSubmit={(e) => {
+          onSubmit={e => {
             e.preventDefault();
             handleSubmit();
           }}
@@ -68,14 +68,14 @@ export function OnboardingProfileScreen() {
           <LabeledTextInput
             label="이름"
             value={profile.name}
-            onChange={(v) => patchProfile({ name: v })}
+            onChange={v => patchProfile({ name: v })}
           />
           <LabeledTextarea
             label="한 줄 소개"
             maxLength={30}
             rows={2}
             value={profile.bio}
-            onChange={(v) => patchProfile({ bio: v })}
+            onChange={v => patchProfile({ bio: v })}
           />
           <div>
             <span className="block font-bold text-[16px] text-black mb-[8px]">
@@ -83,7 +83,7 @@ export function OnboardingProfileScreen() {
             </span>
             <InterestTagGroup
               value={profile.interests}
-              onChange={(v) => patchProfile({ interests: v })}
+              onChange={v => patchProfile({ interests: v })}
               options={INTEREST_OPTIONS}
               max={3}
             />
@@ -94,24 +94,24 @@ export function OnboardingProfileScreen() {
             </span>
             <MajorToggle
               value={profile.major}
-              onChange={(v) => patchProfile({ major: v })}
+              onChange={v => patchProfile({ major: v })}
             />
           </div>
           <TechStackInput
             value={profile.techStack}
-            onChange={(v) => patchProfile({ techStack: v })}
+            onChange={v => patchProfile({ techStack: v })}
             max={10}
           />
           <LabeledTextarea
             label="경력"
             rows={3}
             value={profile.career}
-            onChange={(v) => patchProfile({ career: v })}
+            onChange={v => patchProfile({ career: v })}
           />
           <LabeledTextInput
             label="학교명"
             value={profile.school}
-            onChange={(v) => patchProfile({ school: v })}
+            onChange={v => patchProfile({ school: v })}
           />
           <div>
             <span className="block font-bold text-[16px] text-black mb-[8px]">
@@ -119,20 +119,20 @@ export function OnboardingProfileScreen() {
             </span>
             <GradeSelector
               value={profile.grade}
-              onChange={(v) => patchProfile({ grade: v })}
+              onChange={v => patchProfile({ grade: v })}
             />
           </div>
           <LabeledTextarea
             label="프로젝트 경험"
             rows={4}
             value={profile.projects}
-            onChange={(v) => patchProfile({ projects: v })}
+            onChange={v => patchProfile({ projects: v })}
           />
           <LabeledTextarea
             label="목표"
             rows={3}
             value={profile.goals}
-            onChange={(v) => patchProfile({ goals: v })}
+            onChange={v => patchProfile({ goals: v })}
           />
           <div className="mt-[12px] flex flex-col items-center gap-[20px]">
             <PrimaryButton

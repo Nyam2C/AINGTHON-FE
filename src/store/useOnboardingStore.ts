@@ -23,11 +23,11 @@ const INITIAL_PROFILE: OnboardingProfile = {
   goals: '',
 };
 
-export const useOnboardingStore = create<OnboardingStore>((set) => ({
+export const useOnboardingStore = create<OnboardingStore>(set => ({
   role: null,
   profile: INITIAL_PROFILE,
-  setRole: (role) => set({ role }),
-  patchProfile: (patch) =>
-    set((state) => ({ profile: { ...state.profile, ...patch } })),
+  setRole: role => set({ role }),
+  patchProfile: patch =>
+    set(state => ({ profile: { ...state.profile, ...patch } })),
   reset: () => set({ role: null, profile: INITIAL_PROFILE }),
 }));

@@ -18,7 +18,7 @@ export function InterestTagGroup({
   const handleClick = (option: Interest) => {
     const isSelected = value.includes(option);
     if (isSelected) {
-      onChange(value.filter((v) => v !== option));
+      onChange(value.filter(v => v !== option));
       return;
     }
     if (value.length >= max) {
@@ -29,7 +29,7 @@ export function InterestTagGroup({
 
   return (
     <div className={`flex flex-wrap gap-[8px] ${className ?? ''}`}>
-      {options.map((option) => {
+      {options.map(option => {
         const selected = value.includes(option);
         const stateClass = selected
           ? 'bg-[#D8E6FF] text-blue-600 border border-blue-500'

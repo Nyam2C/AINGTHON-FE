@@ -25,7 +25,7 @@ export function TechStackInput({
   };
 
   const handleRemove = (target: string) => {
-    onChange(value.filter((v) => v !== target));
+    onChange(value.filter(v => v !== target));
   };
 
   return (
@@ -37,8 +37,8 @@ export function TechStackInput({
         <input
           type="text"
           value={draft}
-          onChange={(e) => setDraft(e.target.value)}
-          onKeyDown={(e) => {
+          onChange={e => setDraft(e.target.value)}
+          onKeyDown={e => {
             if (e.key === 'Enter') {
               e.preventDefault();
               handleAdd();
@@ -57,7 +57,7 @@ export function TechStackInput({
       </div>
       {value.length > 0 && (
         <div className="mt-[12px] flex flex-wrap gap-[8px]">
-          {value.map((tech) => (
+          {value.map(tech => (
             <span
               key={tech}
               className="bg-[#D8E6FF] text-blue-600 rounded-full px-[14px] py-[8px] text-[14px] flex items-center gap-[6px]"

@@ -14,7 +14,7 @@ export function GradeSelector({
 }: GradeSelectorProps) {
   return (
     <div className={`grid grid-cols-4 gap-[8px] ${className ?? ''}`}>
-      {GRADE_OPTIONS.map((grade) => {
+      {GRADE_OPTIONS.map(grade => {
         const selected = value === grade;
         const stateClass = selected
           ? 'bg-blue-500 text-white border-blue-500'

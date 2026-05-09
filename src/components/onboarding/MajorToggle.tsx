@@ -14,7 +14,7 @@ const OPTIONS: ReadonlyArray<{ value: Major; label: string }> = [
 export function MajorToggle({ value, onChange, className }: MajorToggleProps) {
   return (
     <div className={`flex gap-[8px] ${className ?? ''}`}>
-      {OPTIONS.map((option) => {
+      {OPTIONS.map(option => {
         const selected = value === option.value;
         const stateClass = selected
           ? 'bg-blue-500 text-white border-blue-500'

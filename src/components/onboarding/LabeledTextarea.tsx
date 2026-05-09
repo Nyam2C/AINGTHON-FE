@@ -33,7 +33,7 @@ export function LabeledTextarea({
         <textarea
           id={textareaId}
           value={value}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={e => onChange(e.target.value)}
           placeholder={placeholder}
           maxLength={maxLength}
           rows={rows}

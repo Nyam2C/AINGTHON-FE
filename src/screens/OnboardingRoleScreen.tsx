@@ -29,8 +29,8 @@ const ROLE_CARDS: ReadonlyArray<{
 
 export function OnboardingRoleScreen() {
   const navigate = useNavigate();
-  const role = useOnboardingStore((s) => s.role);
-  const setRole = useOnboardingStore((s) => s.setRole);
+  const role = useOnboardingStore(s => s.role);
+  const setRole = useOnboardingStore(s => s.setRole);
 
   const handleSelect = (nextRole: Role) => {
     setRole(nextRole);
@@ -46,7 +46,7 @@ export function OnboardingRoleScreen() {
           무엇인가요?
         </h1>
         <div className="absolute left-1/2 top-[240px] flex -translate-x-1/2 flex-col gap-[16px]">
-          {ROLE_CARDS.map((card) => (
+          {ROLE_CARDS.map(card => (
             <RoleCard
               key={card.role}
               title={card.title}
